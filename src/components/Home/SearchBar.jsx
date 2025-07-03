@@ -1,12 +1,20 @@
+import { useState } from "react";
+
 import { Search } from "neetoicons";
 import { Input } from "neetoui";
 
 const SearchBar = ({
-  searchTerm = "",
+  // searchKey = "",
+  // setSearchKey,
+  searchTerm,
   placeHolder = "",
-  debounceUpdateSearchTerm = () => {},
+  updateQueryParams,
 }) => {
-  console.log(placeHolder, searchTerm, debounceUpdateSearchTerm);
+  const [searchKey, setSearchKey] = useState(searchTerm || "");
+  const handleChange = value => {
+    updateQueryParams({ searchTerm: value });
+    setSearchKey(value);
+  };
 
   return (
     <div className="w-full px-20 py-8">
@@ -16,8 +24,10 @@ const SearchBar = ({
         prefix={<Search color="#516165" />}
         size="large"
         type="search"
-        value={searchTerm}
-        onChange={e => debounceUpdateSearchTerm(e.target.value)}
+        value={searchKey}
+        onChange={({ target: { value } }) => {
+          handleChange(value);
+        }}
       />
     </div>
   );
