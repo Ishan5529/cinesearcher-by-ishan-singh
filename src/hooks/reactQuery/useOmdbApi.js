@@ -7,5 +7,5 @@ export const useOmdbFetch = params =>
   useQuery({
     queryKey: [QUERY_KEYS.OMDB, params],
     queryFn: () => omdbApi.fetchList(params),
-    enabled: true,
+    enabled: !!params.s,
   });
