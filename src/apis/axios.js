@@ -7,7 +7,7 @@ import { Bounce } from "react-toastify";
 const checkForSuccess = ({ response, error = "" }) => {
   if (response === "False") {
     return Toastr.error(error, {
-      autoClose: 200,
+      autoClose: 2000,
       transition: Bounce,
     });
   }
@@ -19,7 +19,7 @@ const showErrorToastr = error => {
   if (error.message === t("error.networkError")) {
     Toastr.error(t("error.noInternetConnection"));
   } else if (error.response?.status !== 404) {
-    Toastr.error(error, { autoClose: 200, transition: Bounce });
+    Toastr.error(error, { autoClose: 2000, transition: Bounce });
   }
 };
 

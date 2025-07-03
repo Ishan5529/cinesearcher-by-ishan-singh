@@ -1,6 +1,9 @@
 {
   "title": "Cine Searcher",
   "pageTitle": "{{title}} | Cine Searcher",
+  "searchBar": {
+    "placeholder": "Search for movies or series"
+  },
   "error": {
     "notFound": "Page not found",
     "serverError": "Server error",
