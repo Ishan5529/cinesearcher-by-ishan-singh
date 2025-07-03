@@ -1,9 +1,9 @@
 import React from "react";
 
-import { Button } from "neetoui";
+import SearchBar from "components/Home/SearchBar";
 
 import "./common/i18n";
 
-const App = () => <Button label="Click me" style="secondary" />;
+const App = () => <SearchBar placeHolder="Search for movies" searchTerm="" />;
 
 export default App;
