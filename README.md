@@ -1,5 +1,4 @@
-# SmileCart
+# CineSearcher
 
-A sample React project used for teaching React concepts via Bigbinary Academy.
-
-Wireframe: https://amaljith-k.neetowireframe.com/p/MIP/
+Web app for searching movie details, powered by React.
+__Database__ - https://www.omdbapi.com/
