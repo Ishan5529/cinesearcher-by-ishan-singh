@@ -8,7 +8,7 @@ import capitalize from "utils/capitalize";
 const MovieCard = ({ movie, clickDetails, setShowId }) => {
   const handleClick = () => {
     setShowId(() => movie?.imdbID);
-    clickDetails();
+    clickDetails(movie.imdbID, movie.title);
   };
 
   return (

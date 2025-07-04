@@ -13,11 +13,13 @@ import { filterNonNull } from "neetocist";
 import { Pagination } from "neetoui";
 import { isEmpty } from "ramda";
 import { useHistory } from "react-router-dom";
+import { useHistoryStore } from "stores/useHistoryStore";
 import { buildUrl } from "utils/url";
 
 const DisplayResults = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showId, setShowId] = useState(null);
+  const addOrMoveToTop = useHistoryStore(state => state.addOrMoveToTop);
   const { page, searchTerm = "" } = useQueryParams();
   const [searchKey, setSearchKey] = useState(searchTerm || "");
   const history = useHistory();
@@ -54,8 +56,13 @@ const DisplayResults = () => {
     );
   });
 
+  const clickDetails = (imdbID, title) => {
+    setIsOpen(true);
+    addOrMoveToTop(imdbID, title);
+  };
+
   return (
-    <div className="flex h-full w-[1300px] flex-col items-center overflow-y-auto border-2 bg-gray-50 px-10 py-10">
+    <div className="flex h-full w-3/4 flex-col items-center overflow-y-auto border-2 bg-gray-50 px-10 py-10">
       <SearchBar
         placeHolder={t("searchBar.placeholder")}
         searchKey={searchKey}
@@ -66,12 +73,10 @@ const DisplayResults = () => {
         {searchTerm &&
           search?.map((movie, index) => (
             <MovieCard
+              clickDetails={clickDetails}
               key={index}
               movie={movie}
               setShowId={setShowId}
-              clickDetails={() => {
-                setIsOpen(true);
-              }}
             />
           ))}
       </div>

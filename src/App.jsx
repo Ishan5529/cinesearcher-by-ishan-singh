@@ -1,10 +1,10 @@
 import React from "react";
 
-import DisplayResults from "components/Home/DisplayResults";
+import Home from "components/Home";
 
 const App = () => (
   <div className="h-screen w-screen overflow-y-hidden">
-    <DisplayResults />
+    <Home />
   </div>
 );
 
