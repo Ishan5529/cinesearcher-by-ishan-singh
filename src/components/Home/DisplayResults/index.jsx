@@ -64,6 +64,7 @@ const DisplayResults = () => {
   return (
     <div className="flex h-full w-3/4 flex-col items-center overflow-y-auto border-2 bg-gray-50 px-10 py-10">
       <SearchBar
+        isModalOpen={isOpen}
         placeHolder={t("searchBar.placeholder")}
         searchKey={searchKey}
         setSearchKey={setSearchKey}
