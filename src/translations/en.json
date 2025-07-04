@@ -8,6 +8,12 @@
     "notFound": "Page not found",
     "serverError": "Server error",
     "networkError": "Network error",
-    "noInternetConnection": "No internet connection"
+    "noInternetConnection": "No internet connection",
+    "noPlotDetails": "No plot data available."
+  },
+  "buttonLabels": {
+    "showDetails": "View details",
+    "search": "Search",
+    "close": "Close"
   }
 }

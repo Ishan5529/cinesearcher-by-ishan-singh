@@ -3,40 +3,43 @@ import { FALLBACK_IMAGE_URL } from "constants/constant";
 import { useState, useEffect } from "react";
 
 import omdbApi from "apis/Omdb";
+import { t } from "i18next";
 import { Modal } from "neetoui";
 
-const ShowDetails = ({ show, isOpen = false }) => {
-  const [showDetails, setShowDetails] = useState(show);
+const ShowDetails = ({ showId, isOpen, setIsOpen }) => {
+  const [showDetails, setShowDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchShowDetails = async () => {
-    if (!showDetails?.imdbID) return;
+    if (!showId) {
+      return;
+    }
     setIsLoading(true);
     try {
-      const response = await omdbApi.fetchById(showDetails.imdbID);
+      const response = await omdbApi.fetchById(showId);
       setShowDetails(() => response);
       console.log(response);
-    } catch (error) {
-      console.error("Error fetching show details:", error);
     } finally {
       setIsLoading(false);
-      console.log("Show Details:", showDetails);
     }
   };
 
   useEffect(() => {
     fetchShowDetails();
-  }, []);
-
-  if (isLoading) {
-    console.log("Loading show details...");
-  }
+  }, [isOpen]);
 
   return (
-    isOpen && (
-      <Modal isOpen={isOpen} size="large" onClose={() => {}}>
+    showDetails &&
+    !isLoading && (
+      <Modal
+        isOpen={isOpen}
+        style={{ width: "50%", minWidth: "50vw", margin: "0 auto" }}
+        onClose={() => {
+          setIsOpen(false);
+        }}
+      >
         <div className="flex flex-col items-center p-6">
-          <div className="Header">
+          <div className="Header mb-3 self-start">
             <div className="Title">
               <h1 className="text-[36px] font-bold">{showDetails?.title}</h1>
             </div>
@@ -51,19 +54,25 @@ const ShowDetails = ({ show, isOpen = false }) => {
               ))}
             </div>
           </div>
-          <div className="Body mt-4 flex flex-row gap-6">
-            <div className="Poster">
-              <img
-                alt={`${showDetails?.title} poster`}
-                className="h-96 w-72 rounded-lg"
-                src={showDetails?.poster || FALLBACK_IMAGE_URL}
-                onError={e => {
-                  e.target.src = FALLBACK_IMAGE_URL;
-                }}
-              />
+          <div className="Body mt-4 flex min-h-[350px] w-full flex-row gap-6">
+            <div className="Poster w-2/5">
+              <div className="w-max rounded-2xl border-8 border-gray-200 shadow-2xl">
+                <img
+                  alt={`${showDetails?.title} poster`}
+                  className="rounded-lg"
+                  src={showDetails?.poster || FALLBACK_IMAGE_URL}
+                  onError={e => {
+                    e.target.src = FALLBACK_IMAGE_URL;
+                  }}
+                />
+              </div>
             </div>
-            <div className="Details flex flex-col gap-4">
-              <p className="text-gray-600">{showDetails?.plot}</p>
+            <div className="Details flex w-3/5 flex-col justify-between">
+              <p className="text-gray-600">
+                {showDetails?.plot !== "N/A"
+                  ? showDetails?.plot
+                  : t("error.noPlotDetails")}
+              </p>
               <p>
                 <strong>Director:</strong> {showDetails?.director}
               </p>

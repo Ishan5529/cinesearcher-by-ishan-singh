@@ -16,6 +16,8 @@ import { useHistory } from "react-router-dom";
 import { buildUrl } from "utils/url";
 
 const DisplayResults = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [showId, setShowId] = useState(null);
   const { page, searchTerm = "" } = useQueryParams();
   const [searchKey, setSearchKey] = useState(searchTerm || "");
   const history = useHistory();
@@ -66,13 +68,14 @@ const DisplayResults = () => {
             <MovieCard
               key={index}
               movie={movie}
-              // clickDetails={() => {
-              //   setIsOpen(true);
-              // }}
+              setShowId={setShowId}
+              clickDetails={() => {
+                setIsOpen(true);
+              }}
             />
           ))}
       </div>
-      <ShowDetails isOpen show={search[0]} />
+      <ShowDetails isOpen={isOpen} setIsOpen={setIsOpen} showId={showId} />
       <div className="mt-10 self-end">
         <Pagination
           className="neetix-pagination"
