@@ -62,7 +62,7 @@ const ShowDetails = ({ showId, isOpen, setIsOpen }) => {
             <div className="Poster w-2/5">
               <div className="w-max rounded-2xl border-8 border-gray-200 shadow-2xl">
                 <img
-                  alt={`${showDetails?.title} poster`}
+                  alt={showDetails?.title}
                   className="rounded-lg"
                   src={showDetails?.poster || FALLBACK_IMAGE_URL}
                   onError={e => {
@@ -78,28 +78,33 @@ const ShowDetails = ({ showId, isOpen, setIsOpen }) => {
                   : t("error.noPlotDetails")}
               </p>
               <p>
-                <strong>Director:</strong> {showDetails?.director}
+                <strong>{t("showDetails.director")}:</strong>{" "}
+                {showDetails?.director}
               </p>
               <p>
-                <strong>Actors:</strong> {showDetails?.actors}
+                <strong>{t("showDetails.cast")}:</strong> {showDetails?.actors}
               </p>
               <p>
-                <strong>Box Office:</strong> {showDetails?.boxOffice}
+                <strong>{t("showDetails.boxOffice")}:</strong>{" "}
+                {showDetails?.boxOffice}
               </p>
               <p>
-                <strong>Year:</strong> {showDetails?.year}
+                <strong>{t("showDetails.year")}:</strong> {showDetails?.year}
               </p>
               <p>
-                <strong>Runtime:</strong> {showDetails?.runtime}
+                <strong>{t("showDetails.runtime")}:</strong>{" "}
+                {showDetails?.runtime}
               </p>
               <p>
-                <strong>Language:</strong> {showDetails?.language}
+                <strong>{t("showDetails.language")}:</strong>{" "}
+                {showDetails?.language}
               </p>
               <p>
-                <strong>Rating:</strong> {showDetails?.imdbRating}
+                <strong>{t("showDetails.rating")}:</strong>{" "}
+                {showDetails?.imdbRating}
               </p>
               <p>
-                <strong>Rated:</strong> {showDetails?.rated}
+                <strong>{t("showDetails.rated")}:</strong> {showDetails?.rated}
               </p>
             </div>
           </div>
