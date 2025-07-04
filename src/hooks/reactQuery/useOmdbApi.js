@@ -5,6 +5,7 @@ import { QUERY_KEYS } from "../../constants/query";
 
 export const useOmdbFetch = params =>
   useQuery({
+    keepPreviousData: true,
     queryKey: [QUERY_KEYS.OMDB, params],
     queryFn: () => omdbApi.fetchList(params),
     enabled: !!params.s,

@@ -11,7 +11,10 @@ const MovieCard = ({ movie, clickDetails }) => (
         <img
           alt={`${movie?.title} poster`}
           className="h-64 w-48 rounded-xl"
-          src={movie?.poster ? movie.poster : FALLBACK_IMAGE_URL}
+          src={movie?.poster ? movie?.poster : FALLBACK_IMAGE_URL}
+          onError={e => {
+            e.target.src = FALLBACK_IMAGE_URL;
+          }}
         />
       </div>
       <Tooltip tooltipContent={movie?.title}>

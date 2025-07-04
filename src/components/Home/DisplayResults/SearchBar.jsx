@@ -1,16 +1,12 @@
-import { useState } from "react";
-
 import { Search } from "neetoicons";
 import { Input } from "neetoui";
 
 const SearchBar = ({
-  // searchKey = "",
-  // setSearchKey,
-  searchTerm,
+  searchKey = "",
+  setSearchKey,
   placeHolder = "",
   updateQueryParams,
 }) => {
-  const [searchKey, setSearchKey] = useState(searchTerm || "");
   const handleChange = value => {
     updateQueryParams({ searchTerm: value });
     setSearchKey(value);
