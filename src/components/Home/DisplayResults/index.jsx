@@ -4,6 +4,7 @@ import React, { useState } from "react";
 
 import MovieCard from "components/Home/DisplayResults/MovieCard";
 import SearchBar from "components/Home/DisplayResults/SearchBar";
+import ShowDetails from "components/Home/ShowDetails";
 import { useOmdbFetch } from "hooks/reactQuery/useOmdbApi";
 import useFuncDebounce from "hooks/useFuncDebounce";
 import useQueryParams from "hooks/useQueryParams";
@@ -62,9 +63,16 @@ const DisplayResults = () => {
       <div className="mt-8 flex flex-1 flex-row flex-wrap gap-4">
         {searchTerm &&
           search?.map((movie, index) => (
-            <MovieCard clickDetails={() => {}} key={index} movie={movie} />
+            <MovieCard
+              key={index}
+              movie={movie}
+              // clickDetails={() => {
+              //   setIsOpen(true);
+              // }}
+            />
           ))}
       </div>
+      <ShowDetails isOpen show={search[0]} />
       <div className="mt-10 self-end">
         <Pagination
           className="neetix-pagination"
