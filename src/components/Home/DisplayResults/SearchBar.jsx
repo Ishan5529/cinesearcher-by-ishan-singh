@@ -17,7 +17,7 @@ const SearchBar = ({
   };
 
   return (
-    <div className="w-full px-20 py-8">
+    <div className="w-full">
       <Input
         autoFocus
         placeholder={placeHolder}

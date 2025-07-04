@@ -5,7 +5,7 @@ import { Button } from "neetoui";
 import capitalize from "utils/capitalize";
 
 const MovieCard = ({ movie, clickDetails }) => (
-  <div className="ml-8 mt-8 flex h-96 w-72 flex-col justify-between gap-y-2 rounded-2xl px-4 py-2 shadow-2xl">
+  <div className="flex h-96 w-72 flex-col justify-between gap-y-2 rounded-2xl px-4 py-2 shadow-2xl hover:bg-gray-100">
     <div>
       <div className="mb-2 flex items-center justify-center">
         <img
