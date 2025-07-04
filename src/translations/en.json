@@ -30,5 +30,9 @@
     "showDetails": "View details",
     "search": "Search",
     "close": "Close"
+  },
+  "pageNotFound": {
+    "title": "The page you're looking for can't be found",
+    "label": "Back to home"
   }
 }
