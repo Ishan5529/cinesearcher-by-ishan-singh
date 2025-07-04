@@ -41,6 +41,7 @@ const DisplayResults = () => {
     const updatedParam = {
       ...params,
       ...updatedValue,
+      page: DEFAULT_PAGE_INDEX,
     };
 
     history.push(
