@@ -1,23 +1,19 @@
-import { useState } from "react";
-
 import { Search } from "neetoicons";
 import { Input } from "neetoui";
 
 const SearchBar = ({
-  // searchKey = "",
-  // setSearchKey,
-  searchTerm,
+  searchKey = "",
+  setSearchKey,
   placeHolder = "",
   updateQueryParams,
 }) => {
-  const [searchKey, setSearchKey] = useState(searchTerm || "");
   const handleChange = value => {
     updateQueryParams({ searchTerm: value });
     setSearchKey(value);
   };
 
   return (
-    <div className="w-full px-20 py-8">
+    <div className="w-full">
       <Input
         autoFocus
         placeholder={placeHolder}
