@@ -1,3 +1,4 @@
+import PageLoader from "./PageLoader";
 import Tooltip from "./Tooltip";
 
-export { Tooltip };
+export { PageLoader, Tooltip };

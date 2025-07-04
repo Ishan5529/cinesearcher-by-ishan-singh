@@ -4,6 +4,7 @@ import React, { useState } from "react";
 
 import MovieCard from "components/Home/DisplayResults/MovieCard";
 import SearchBar from "components/Home/DisplayResults/SearchBar";
+import ShowDetails from "components/Home/ShowDetails";
 import { useOmdbFetch } from "hooks/reactQuery/useOmdbApi";
 import useFuncDebounce from "hooks/useFuncDebounce";
 import useQueryParams from "hooks/useQueryParams";
@@ -15,6 +16,8 @@ import { useHistory } from "react-router-dom";
 import { buildUrl } from "utils/url";
 
 const DisplayResults = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [showId, setShowId] = useState(null);
   const { page, searchTerm = "" } = useQueryParams();
   const [searchKey, setSearchKey] = useState(searchTerm || "");
   const history = useHistory();
@@ -62,9 +65,17 @@ const DisplayResults = () => {
       <div className="mt-8 flex flex-1 flex-row flex-wrap gap-4">
         {searchTerm &&
           search?.map((movie, index) => (
-            <MovieCard clickDetails={() => {}} key={index} movie={movie} />
+            <MovieCard
+              key={index}
+              movie={movie}
+              setShowId={setShowId}
+              clickDetails={() => {
+                setIsOpen(true);
+              }}
+            />
           ))}
       </div>
+      <ShowDetails isOpen={isOpen} setIsOpen={setIsOpen} showId={showId} />
       <div className="mt-10 self-end">
         <Pagination
           className="neetix-pagination"
