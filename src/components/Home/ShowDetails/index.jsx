@@ -3,6 +3,7 @@ import { FALLBACK_IMAGE_URL } from "constants/constant";
 import { useState, useEffect } from "react";
 
 import omdbApi from "apis/Omdb";
+import { PageLoader } from "components/commons";
 import { t } from "i18next";
 import { Modal } from "neetoui";
 
@@ -18,7 +19,6 @@ const ShowDetails = ({ showId, isOpen, setIsOpen }) => {
     try {
       const response = await omdbApi.fetchById(showId);
       setShowDetails(() => response);
-      console.log(response);
     } finally {
       setIsLoading(false);
     }
@@ -28,12 +28,16 @@ const ShowDetails = ({ showId, isOpen, setIsOpen }) => {
     fetchShowDetails();
   }, [isOpen]);
 
+  if (isLoading) {
+    return <PageLoader />;
+  }
+
   return (
     showDetails &&
     !isLoading && (
       <Modal
         isOpen={isOpen}
-        style={{ width: "50%", minWidth: "50vw", margin: "0 auto" }}
+        style={{ width: "60%", minWidth: "50vw", margin: "0 auto" }}
         onClose={() => {
           setIsOpen(false);
         }}
