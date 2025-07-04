@@ -9,6 +9,16 @@
     "emptyHistory": "No history available.",
     "clearButton": "Clear History"
   },
+  "showDetails": {
+    "director": "Director",
+    "cast": "Cast",
+    "boxOffice": "Box Office",
+    "year": "Year",
+    "runtime": "Runtime",
+    "rating": "Rating",
+    "language": "Language",
+    "rated": "Rated"
+  },
   "error": {
     "notFound": "Page not found",
     "serverError": "Server error",
@@ -20,5 +30,9 @@
     "showDetails": "View details",
     "search": "Search",
     "close": "Close"
+  },
+  "pageNotFound": {
+    "title": "The page you're looking for can't be found",
+    "label": "Back to home"
   }
 }

@@ -16,7 +16,7 @@ const MovieCard = ({ movie, clickDetails, setShowId }) => {
       <div>
         <div className="mb-2 flex items-center justify-center">
           <img
-            alt={`${movie?.title} poster`}
+            alt={`${movie?.title}`}
             className="h-64 w-48 rounded-xl"
             src={movie?.poster ? movie?.poster : FALLBACK_IMAGE_URL}
             onError={e => {

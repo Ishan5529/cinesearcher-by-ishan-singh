@@ -16,6 +16,8 @@ import { useHistory } from "react-router-dom";
 import { useHistoryStore } from "stores/useHistoryStore";
 import { buildUrl } from "utils/url";
 
+import { routes } from "../../../routes";
+
 const DisplayResults = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showId, setShowId] = useState(null);
@@ -34,7 +36,7 @@ const DisplayResults = () => {
   const handlePageNavigation = page =>
     history.replace(
       buildUrl(
-        "/movies",
+        routes.home.index,
         filterNonNull({
           ...params,
           page,
@@ -51,8 +53,8 @@ const DisplayResults = () => {
 
     history.push(
       isEmpty(updatedParam.searchTerm)
-        ? buildUrl("/movies")
-        : buildUrl("/movies", filterNonNull(updatedParam))
+        ? buildUrl(routes.home.index)
+        : buildUrl(routes.home.index, filterNonNull(updatedParam))
     );
   });
 
@@ -64,6 +66,7 @@ const DisplayResults = () => {
   return (
     <div className="flex h-full w-3/4 flex-col items-center overflow-y-auto border-2 bg-gray-50 px-10 py-10">
       <SearchBar
+        isModalOpen={isOpen}
         placeHolder={t("searchBar.placeholder")}
         searchKey={searchKey}
         setSearchKey={setSearchKey}
