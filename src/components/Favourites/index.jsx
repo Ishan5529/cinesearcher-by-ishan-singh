@@ -31,7 +31,7 @@ const Favourites = () => {
   return (
     <div className="flex h-screen w-full flex-col overflow-y-auto bg-gray-50 px-16 py-8">
       {favouriteEntries &&
-        favouriteEntries.map(([imdbID, { title, imdbRatings }]) => (
+        favouriteEntries.map(([imdbID, { title, imdbRating }]) => (
           <div
             className="m-2 flex rounded border bg-white px-6 py-4 shadow-lg shadow-blue-200"
             key={imdbID}
@@ -40,7 +40,7 @@ const Favourites = () => {
               <h2 className="text-xl font-semibold">{title}</h2>
               <p>
                 <strong>{t("showDetails.rating")}:</strong>{" "}
-                <span className="text-base">{imdbRatings}</span> / 10.0
+                <span className="text-base">{imdbRating}</span> / 10.0
               </p>
               <button
                 className="mt-2 rounded bg-blue-500 px-4 py-1 text-white hover:bg-blue-700"
@@ -53,7 +53,7 @@ const Favourites = () => {
               </button>
             </div>
             <Tooltip tooltipContent={t("favourites.removeWarning")}>
-              <div onClick={() => handleDelete(imdbID)}>
+              <div className="h-max" onClick={() => handleDelete(imdbID)}>
                 <Rating
                   className="cursor-pointer hover:animate-spin-slow hover:fill-yellow-500"
                   fill="gold"

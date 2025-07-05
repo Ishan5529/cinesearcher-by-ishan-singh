@@ -22,7 +22,8 @@
   "favourites": {
     "title": "Favourites",
     "empty": "No favourites yet.",
-    "removeWarning": "Remove from favourites"
+    "removeWarning": "Remove from favourites",
+    "add": "Add to favourites"
   },
   "error": {
     "notFound": "Page not found",
