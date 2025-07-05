@@ -3,3 +3,11 @@
 @import "tailwindcss/utilities";
 @import "@bigbinary/neetoui";
 @import "react-toastify/dist/ReactToastify.min.css";
+
+.scroll-hidden::-webkit-scrollbar {
+  display: none;
+}
+.scroll-hidden {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

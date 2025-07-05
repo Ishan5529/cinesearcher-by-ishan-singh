@@ -4,12 +4,17 @@ module.exports = {
   ],
   darkMode: "media", // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      animation: {
+        'spin-slow': 'spin 3s linear infinite',
+      },
+    },
   },
   variants: {
     extend: {},
   },
   plugins: [
     require('@tailwindcss/line-clamp'),
+    require('tailwind-scrollbar-hide'),
   ],
 }

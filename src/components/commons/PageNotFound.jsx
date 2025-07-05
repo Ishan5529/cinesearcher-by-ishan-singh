@@ -4,7 +4,7 @@ import { NoData } from "neetoui";
 import { routes } from "../../routes";
 
 const PageNotFound = () => (
-  <div className="flex h-screen items-center justify-center">
+  <div className="flex h-4/5 items-center justify-center">
     <NoData
       title={t("pageNotFound.title")}
       primaryButtonProps={{

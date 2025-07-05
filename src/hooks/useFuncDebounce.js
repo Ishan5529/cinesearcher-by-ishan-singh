@@ -4,7 +4,7 @@ const useFuncDebounce = func => {
   const timer = useRef(null);
   const debouncedFunc = (...args) => {
     clearTimeout(timer.current);
-    timer.current = setTimeout(() => func(...args), 350);
+    timer.current = setTimeout(() => func(...args), 500);
   };
 
   return debouncedFunc;

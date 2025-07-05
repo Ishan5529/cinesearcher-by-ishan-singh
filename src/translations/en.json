@@ -1,6 +1,6 @@
 {
   "title": "Cine Searcher",
-  "pageTitle": "{{title}} | Cine Searcher",
+  "pageTitle": "{{title}}",
   "searchBar": {
     "placeholder": "Search for movies or series"
   },
