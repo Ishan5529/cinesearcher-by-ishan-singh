@@ -10,7 +10,7 @@ import { useHistoryStore } from "stores/useHistoryStore";
 const History = () => {
   const history = useHistoryStore(state => state.history);
   const viewKey = useHistoryStore(state => state.viewKey);
-  const lastViewedId = useHistoryStore(state => state.lastViewedId);
+  const lastViewedIds = useHistoryStore(state => state.lastViewedIds);
   const deleteFromHistory = useHistoryStore(state => state.deleteFromHistory);
   const clearHistory = useHistoryStore(state => state.clearHistory);
   const itemRefs = useRef({});
@@ -20,8 +20,8 @@ const History = () => {
   const [alertButtonLabel, setAlertButtonLabel] = useState("");
 
   useEffect(() => {
-    if (lastViewedId && itemRefs.current[lastViewedId]) {
-      itemRefs.current[lastViewedId]?.current?.scrollIntoView({
+    if (lastViewedIds && itemRefs.current[lastViewedIds[0]]) {
+      itemRefs.current[lastViewedIds[0]]?.current?.scrollIntoView({
         behavior: "smooth",
         block: "center",
       });
@@ -66,7 +66,7 @@ const History = () => {
           <ul className="w-full px-4">
             {history.map((item, index) => {
               const imdbID = Object.keys(item)[0];
-              const isLastViewed = imdbID === lastViewedId;
+              const isLastViewed = imdbID === lastViewedIds[0];
 
               if (!itemRefs.current[imdbID]) {
                 itemRefs.current[imdbID] = React.createRef();
