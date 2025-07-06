@@ -10,6 +10,7 @@ import useFuncDebounce from "hooks/useFuncDebounce";
 import useQueryParams from "hooks/useQueryParams";
 import { t } from "i18next";
 import { filterNonNull } from "neetocist";
+import { Filter } from "neetoicons";
 import { Pagination } from "neetoui";
 import { isEmpty } from "ramda";
 import { useHistory } from "react-router-dom";
@@ -20,6 +21,7 @@ import { routes } from "../../../routes";
 
 const DisplayResults = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [showId, setShowId] = useState(null);
   const addOrMoveToTop = useHistoryStore(state => state.addOrMoveToTop);
   const { page, searchTerm = "" } = useQueryParams();
@@ -69,13 +71,26 @@ const DisplayResults = () => {
 
   return (
     <div className="scroll-hidden flex h-full w-3/4 flex-col items-center overflow-y-auto border-2 bg-gray-50 px-10 py-10">
-      <SearchBar
-        isModalOpen={isOpen}
-        placeHolder={t("searchBar.placeholder")}
-        searchKey={searchKey}
-        setSearchKey={setSearchKey}
-        updateQueryParams={updateQueryParams}
-      />
+      <div className="flex w-full items-center justify-between space-x-4">
+        <SearchBar
+          isModalOpen={isOpen}
+          placeHolder={t("searchBar.placeholder")}
+          searchKey={searchKey}
+          setSearchKey={setSearchKey}
+          updateQueryParams={updateQueryParams}
+        />
+        <div
+          className="relative cursor-pointer"
+          onClick={() => setIsFilterOpen(prev => !prev)}
+        >
+          <Filter fill={isFilterOpen ? "lightgray" : "none"} />
+          {isFilterOpen && (
+            <div className="absolute right-0 top-10 z-10 w-64 rounded-md border bg-white p-4 shadow-lg">
+              <p className="text-sm font-semibold">Filter here</p>
+            </div>
+          )}
+        </div>
+      </div>
       <div className="mt-8 flex flex-1 flex-row flex-wrap gap-4">
         {searchTerm &&
           search?.map((movie, index) => (
