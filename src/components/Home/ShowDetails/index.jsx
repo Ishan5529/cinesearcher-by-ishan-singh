@@ -67,19 +67,21 @@ const ShowDetails = ({ showId, isOpen, setIsOpen }) => {
       >
         <div className="flex flex-col items-center p-6">
           <div className="Header mb-3 self-start">
-            <div className="Title flex flex-row items-center space-x-6">
-              <h1 className="text-[32px] font-bold">{showDetails?.title}</h1>
-              <Tooltip
-                placement="right"
-                tooltipContent={handleTooltipContent()}
-              >
-                <div
-                  className="mb-1.5 cursor-pointer self-end"
-                  onClick={handleToggleFavourite}
+            <div className="Title">
+              <h1 className="text-[32px] font-bold">
+                {showDetails?.title}
+                <Tooltip
+                  placement="right"
+                  tooltipContent={handleTooltipContent()}
                 >
-                  <Rating fill={handleStarFill()} />
-                </div>
-              </Tooltip>
+                  <div
+                    className="mb-1.5 ml-6 inline cursor-pointer"
+                    onClick={handleToggleFavourite}
+                  >
+                    <Rating className="mb-1 inline" fill={handleStarFill()} />
+                  </div>
+                </Tooltip>
+              </h1>
             </div>
             <div className="Genre flex flex-row gap-2">
               {showDetails?.genre?.split(",").map((genre, index) => (
