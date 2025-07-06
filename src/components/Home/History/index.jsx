@@ -6,6 +6,7 @@ import { useHistoryStore } from "stores/useHistoryStore";
 
 const History = () => {
   const history = useHistoryStore(state => state.history);
+  const viewKey = useHistoryStore(state => state.viewKey);
   const lastViewedId = useHistoryStore(state => state.lastViewedId);
   const clearHistory = useHistoryStore(state => state.clearHistory);
   const itemRefs = useRef({});
@@ -17,7 +18,7 @@ const History = () => {
         block: "center",
       });
     }
-  }, [lastViewedId]);
+  }, [viewKey]);
 
   return (
     <div className="flex min-h-screen w-1/4 justify-center overflow-y-auto bg-gray-100">
