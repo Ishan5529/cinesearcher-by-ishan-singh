@@ -6,12 +6,14 @@ import { t } from "i18next";
 import { Rating } from "neetoicons";
 import { isEmpty } from "ramda";
 import useFavouritesStore from "stores/useFavouritesStore";
+import { useHistoryStore } from "stores/useHistoryStore";
 
 const Favourites = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDeleteClicked, setIsDeleteClicked] = useState(false);
   const [showId, setShowId] = useState(null);
   const { favourites, toggleFavourite } = useFavouritesStore();
+  const addOrMoveToTop = useHistoryStore(state => state.addOrMoveToTop);
 
   const favouriteEntries = Object.entries(favourites);
 
@@ -26,6 +28,10 @@ const Favourites = () => {
   const handleDelete = imdbID => {
     setShowId(() => imdbID);
     setIsDeleteClicked(() => true);
+  };
+
+  const updateHistory = (imdbID, title) => {
+    addOrMoveToTop(imdbID, title);
   };
 
   return (
@@ -47,6 +53,7 @@ const Favourites = () => {
                 onClick={() => {
                   setIsOpen(() => true);
                   setShowId(() => imdbID);
+                  updateHistory(imdbID, title);
                 }}
               >
                 {t("buttonLabels.showDetails")}
