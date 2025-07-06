@@ -3,13 +3,17 @@ import { FALLBACK_IMAGE_URL } from "constants/constant";
 import { useState, useEffect } from "react";
 
 import omdbApi from "apis/Omdb";
-import { PageLoader } from "components/commons";
+import { PageLoader, Tooltip } from "components/commons";
 import { t } from "i18next";
+import { Rating } from "neetoicons";
 import { Modal } from "neetoui";
+import useFavouritesStore from "stores/useFavouritesStore";
 
 const ShowDetails = ({ showId, isOpen, setIsOpen }) => {
   const [showDetails, setShowDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const { favourites, toggleFavourite } = useFavouritesStore();
 
   const fetchShowDetails = async () => {
     if (!showId) {
@@ -28,6 +32,25 @@ const ShowDetails = ({ showId, isOpen, setIsOpen }) => {
     fetchShowDetails();
   }, [isOpen]);
 
+  const handleTooltipContent = () => {
+    if (showId in favourites) {
+      return t("favourites.removeWarning");
+    }
+
+    return t("favourites.add");
+  };
+
+  const handleStarFill = () => (showId in favourites ? "gold" : "none");
+
+  const handleToggleFavourite = () => {
+    toggleFavourite({
+      imdbID: showId,
+      title: showDetails?.title,
+      imdbRating: showDetails?.imdbRating,
+    });
+    console.log("Toggled favourite for showId:", showId);
+  };
+
   if (isLoading) {
     return <PageLoader />;
   }
@@ -44,8 +67,19 @@ const ShowDetails = ({ showId, isOpen, setIsOpen }) => {
       >
         <div className="flex flex-col items-center p-6">
           <div className="Header mb-3 self-start">
-            <div className="Title">
-              <h1 className="text-[36px] font-bold">{showDetails?.title}</h1>
+            <div className="Title flex flex-row items-center space-x-6">
+              <h1 className="text-[32px] font-bold">{showDetails?.title}</h1>
+              <Tooltip
+                placement="right"
+                tooltipContent={handleTooltipContent()}
+              >
+                <div
+                  className="mb-1.5 cursor-pointer self-end"
+                  onClick={handleToggleFavourite}
+                >
+                  <Rating fill={handleStarFill()} />
+                </div>
+              </Tooltip>
             </div>
             <div className="Genre flex flex-row gap-2">
               {showDetails?.genre?.split(",").map((genre, index) => (

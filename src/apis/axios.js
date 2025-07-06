@@ -17,7 +17,10 @@ const checkForSuccess = ({ response, error = "" }) => {
 
 const showErrorToastr = error => {
   if (error.message === t("error.networkError")) {
-    Toastr.error(t("error.noInternetConnection"));
+    Toastr.error(t("error.noInternetConnection"), {
+      autoClose: 2000,
+      transition: Bounce,
+    });
   } else if (error.response?.status !== 404) {
     Toastr.error(error, { autoClose: 2000, transition: Bounce });
   }
@@ -52,7 +55,7 @@ const responseInterceptors = () => {
     error => {
       showErrorToastr(error);
 
-      return Promise.reject(error);
+      return Promise.resolve(error);
     }
   );
 };

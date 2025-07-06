@@ -16,14 +16,19 @@ import {
   arrow,
 } from "@floating-ui/react";
 
-const Tooltip = ({ tooltipContent, children }) => {
+const Tooltip = ({
+  tooltipContent,
+  children,
+  placement = "top",
+  disablePortal = false,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const arrowRef = useRef(null);
 
   const { refs, floatingStyles, context } = useFloating({
     open: isOpen,
     onOpenChange: setIsOpen,
-    placement: "top",
+    placement,
     whileElementsMounted: autoUpdate,
     middleware: [
       arrow({
@@ -57,10 +62,10 @@ const Tooltip = ({ tooltipContent, children }) => {
   return (
     <>
       {elem}
-      <FloatingPortal>
+      <FloatingPortal disabled={disablePortal}>
         {isOpen && (
           <div
-            className="w-max rounded-md bg-gray-800 px-3 py-2 text-xs text-white"
+            className="z-[99999999999999999999999] w-max rounded-md bg-gray-800 px-3 py-2 text-xs text-white"
             ref={refs.setFloating}
             style={floatingStyles}
             {...getFloatingProps()}

@@ -1,6 +1,6 @@
 import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE } from "constants/constant";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import MovieCard from "components/Home/DisplayResults/MovieCard";
 import SearchBar from "components/Home/DisplayResults/SearchBar";
@@ -27,6 +27,10 @@ const DisplayResults = () => {
   const history = useHistory();
 
   const params = { searchTerm, page: Number(page) || DEFAULT_PAGE_INDEX };
+
+  useEffect(() => {
+    setSearchKey(searchTerm);
+  }, [searchTerm]);
 
   const { data: { search, totalResults } = {} } = useOmdbFetch({
     s: searchTerm,
@@ -64,7 +68,7 @@ const DisplayResults = () => {
   };
 
   return (
-    <div className="flex h-full w-3/4 flex-col items-center overflow-y-auto border-2 bg-gray-50 px-10 py-10">
+    <div className="scroll-hidden flex h-full w-3/4 flex-col items-center overflow-y-auto border-2 bg-gray-50 px-10 py-10">
       <SearchBar
         isModalOpen={isOpen}
         placeHolder={t("searchBar.placeholder")}
@@ -84,15 +88,17 @@ const DisplayResults = () => {
           ))}
       </div>
       <ShowDetails isOpen={isOpen} setIsOpen={setIsOpen} showId={showId} />
-      <div className="mt-10 self-end">
-        <Pagination
-          className="neetix-pagination"
-          count={totalResults || 1}
-          navigate={handlePageNavigation}
-          pageNo={Number(page) || DEFAULT_PAGE_INDEX}
-          pageSize={DEFAULT_PAGE_SIZE}
-        />
-      </div>
+      {!isEmpty(searchTerm) && (
+        <div className="mt-10 self-end">
+          <Pagination
+            className="neetix-pagination"
+            count={totalResults || 1}
+            navigate={handlePageNavigation}
+            pageNo={Number(page) || DEFAULT_PAGE_INDEX}
+            pageSize={DEFAULT_PAGE_SIZE}
+          />
+        </div>
+      )}
     </div>
   );
 };

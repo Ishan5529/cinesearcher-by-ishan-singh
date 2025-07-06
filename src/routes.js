@@ -3,5 +3,8 @@ export const routes = {
   home: {
     index: "/shows",
   },
+  favourites: {
+    index: "/favourites",
+  },
   pageNotFound: "*",
 };
