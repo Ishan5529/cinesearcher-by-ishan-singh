@@ -30,7 +30,8 @@
     "serverError": "Server Error",
     "networkError": "Network Error",
     "noInternetConnection": "No internet connection",
-    "noPlotDetails": "No plot data available."
+    "noPlotDetails": "No plot data available.",
+    "yearError": "Year must be less than current year."
   },
   "buttonLabels": {
     "showDetails": "View details",
@@ -39,6 +40,12 @@
     "remove": "Remove",
     "close": "Close",
     "cancel": "Cancel"
+  },
+  "inputLabels": {
+    "year": "Year",
+    "type": "Type",
+    "movie": "Movie",
+    "series": "Series"
   },
   "pageNotFound": {
     "title": "The page you're looking for can't be found",
