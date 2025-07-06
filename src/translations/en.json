@@ -7,7 +7,9 @@
   "history": {
     "title": "View history",
     "emptyHistory": "No history available.",
-    "clearButton": "Clear History"
+    "clearButton": "Clear all",
+    "clearAlertTitle": "Clear history",
+    "deleteAlertTitle": "Delete from history"
   },
   "showDetails": {
     "director": "Director",
@@ -38,6 +40,8 @@
     "search": "Search",
     "confirm": "Confirm",
     "remove": "Remove",
+    "clear": "Clear",
+    "delete": "Delete",
     "close": "Close",
     "cancel": "Cancel"
   },

@@ -31,6 +31,20 @@ export const useHistoryStore = create(set => ({
         viewKey: state.viewKey ^ 1,
       };
     }),
+  deleteFromHistory: imdbID =>
+    set(state => {
+      const updatedHistory = state.history.filter(
+        item => Object.keys(item)[0] !== imdbID
+      );
+      localStorage.setItem("history", JSON.stringify(updatedHistory));
+      localStorage.removeItem("lastViewedId");
+
+      return {
+        history: updatedHistory,
+        lastViewedId: null,
+        // viewKey: state.viewKey ^ 1,
+      };
+    }),
   clearHistory: () => {
     set({ history: [], lastViewedId: null });
     localStorage.removeItem("history");
