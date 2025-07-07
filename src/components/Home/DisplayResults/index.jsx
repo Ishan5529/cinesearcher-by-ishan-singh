@@ -9,14 +9,15 @@ import { useOmdbFetch } from "hooks/reactQuery/useOmdbApi";
 import useFuncDebounce from "hooks/useFuncDebounce";
 import useQueryParams from "hooks/useQueryParams";
 import { t } from "i18next";
-import { Filter, Close } from "neetoicons";
-import { Pagination, Input, Checkbox, Toastr } from "neetoui";
+import { Filter } from "neetoicons";
+import { Pagination } from "neetoui";
 import { isEmpty } from "ramda";
 import { useHistory } from "react-router-dom";
-import { Bounce } from "react-toastify";
 import { useHistoryStore } from "stores/useHistoryStore";
 import { filterNonNullAndEmpty } from "utils/filterNonNullAndEmpty";
 import { buildUrl } from "utils/url";
+
+import FilterMenu from "./FilterMenu";
 
 import { routes } from "../../../routes";
 
@@ -93,56 +94,6 @@ const DisplayResults = () => {
     addOrMoveToTop(imdbID, title);
   };
 
-  const validateDate = ({ target: { value } }) => {
-    const maxYear = new Date().getFullYear();
-    if (value === "") {
-      setYear("");
-
-      return "";
-    }
-
-    const numericValue = Number(value);
-    if (numericValue <= maxYear) {
-      setYear(value);
-
-      return value;
-    }
-    setYear(String(maxYear));
-    Toastr.error(t("error.yearError"), {
-      autoClose: 2000,
-      transition: Bounce,
-    });
-
-    return String(maxYear);
-  };
-
-  const handleYearChange = event => {
-    const validatedValue = validateDate(event);
-    updateQueryParams({ searchYear: validatedValue });
-  };
-
-  const handleMovieCheck = () => {
-    setIsMovieChecked(prev => {
-      const newValue = !prev;
-      updateQueryParams({
-        type: getShowType(newValue, isSeriesChecked),
-      });
-
-      return newValue;
-    });
-  };
-
-  const handleSeriesCheck = () => {
-    setIsSeriesChecked(prev => {
-      const newValue = !prev;
-      updateQueryParams({
-        type: getShowType(isMovieChecked, newValue),
-      });
-
-      return newValue;
-    });
-  };
-
   return (
     <div className="scroll-hidden flex h-full w-3/4 flex-col items-center overflow-y-auto border-2 bg-gray-50 px-10 py-10">
       <div className="flex w-full items-center justify-between space-x-4">
@@ -156,42 +107,20 @@ const DisplayResults = () => {
             fill={isFilterOpen ? "lightgray" : "none"}
             onClick={() => setIsFilterOpen(prev => !prev)}
           />
-          {isFilterOpen && (
-            <div className="absolute right-0 top-10 z-10 w-96 cursor-default rounded-md border bg-white px-4 pb-4 pt-10 shadow-lg">
-              <Input
-                label={t("inputLabels.year")}
-                max={new Date().getFullYear()}
-                min={1900}
-                placeholder="YYYY"
-                type="number"
-                value={year}
-                onChange={handleYearChange}
-              />
-              <div className="mt-6 flex flex-col items-start space-y-2">
-                <h3 className="font-medium">{t("inputLabels.type")}</h3>
-                <div className="flex items-center space-x-16">
-                  <Checkbox
-                    checked={isMovieChecked}
-                    id="movie"
-                    label={t("inputLabels.movie")}
-                    onChange={handleMovieCheck}
-                  />
-                  <Checkbox
-                    checked={isSeriesChecked}
-                    id="series"
-                    label={t("inputLabels.series")}
-                    onChange={handleSeriesCheck}
-                  />
-                </div>
-              </div>
-              <div
-                className="absolute right-2 top-2 cursor-pointer"
-                onClick={() => setIsFilterOpen(false)}
-              >
-                <Close size={16} />
-              </div>
-            </div>
-          )}
+          <FilterMenu
+            {...{
+              isFilterOpen,
+              setIsFilterOpen,
+              year,
+              setYear,
+              updateQueryParams,
+              getShowType,
+              setIsMovieChecked,
+              setIsSeriesChecked,
+              isMovieChecked,
+              isSeriesChecked,
+            }}
+          />
         </div>
       </div>
       <div className="mr-auto mt-8 flex flex-1 flex-row flex-wrap gap-4">
