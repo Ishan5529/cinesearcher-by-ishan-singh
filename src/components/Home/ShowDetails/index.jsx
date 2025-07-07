@@ -17,6 +17,17 @@ const ShowDetails = ({ showId, isOpen, setIsOpen }) => {
 
   const showDetails = data;
 
+  const labels = [
+    { content: showDetails?.director, label: t("showDetails.director") },
+    { content: showDetails?.actors, label: t("showDetails.cast") },
+    { content: showDetails?.boxOffice, label: t("showDetails.boxOffice") },
+    { content: showDetails?.year, label: t("showDetails.year") },
+    { content: showDetails?.runtime, label: t("showDetails.runtime") },
+    { content: showDetails?.language, label: t("showDetails.language") },
+    { content: showDetails?.imdbRating, label: t("showDetails.rating") },
+    { content: showDetails?.rated, label: t("showDetails.rated") },
+  ];
+
   const handleTooltipContent = () => {
     if (showId in favourites) {
       return t("favourites.removeWarning");
@@ -40,8 +51,7 @@ const ShowDetails = ({ showId, isOpen, setIsOpen }) => {
   }
 
   return (
-    showDetails &&
-    !isLoading && (
+    showDetails && (
       <Modal
         isOpen={isOpen}
         style={{ width: "60%", minWidth: "50vw", margin: "0 auto" }}
@@ -95,38 +105,9 @@ const ShowDetails = ({ showId, isOpen, setIsOpen }) => {
               <p className="text-gray-600">
                 {fallbackHelper(showDetails?.plot, t("error.noPlotDetails"))}
               </p>
-              <Label
-                content={showDetails?.director}
-                label={t("showDetails.director")}
-              />
-              <Label
-                content={showDetails?.actors}
-                label={t("showDetails.cast")}
-              />
-              <Label
-                content={showDetails?.boxOffice}
-                label={t("showDetails.boxOffice")}
-              />
-              <Label
-                content={showDetails?.year}
-                label={t("showDetails.year")}
-              />
-              <Label
-                content={showDetails?.runtime}
-                label={t("showDetails.runtime")}
-              />
-              <Label
-                content={showDetails?.language}
-                label={t("showDetails.language")}
-              />
-              <Label
-                content={showDetails?.imdbRating}
-                label={t("showDetails.rating")}
-              />
-              <Label
-                content={showDetails?.rated}
-                label={t("showDetails.rated")}
-              />
+              {labels.map((item, index) => (
+                <Label content={item.content} key={index} label={item.label} />
+              ))}
             </div>
           </div>
         </div>

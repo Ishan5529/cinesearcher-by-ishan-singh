@@ -77,7 +77,7 @@ const History = () => {
                   key={index}
                   ref={itemRefs.current[imdbID]}
                   className={`mb-2 text-wrap rounded p-2 text-center shadow hover:bg-blue-200 ${
-                    isLastViewed ? "bg-yellow-100 font-bold" : "bg-blue-100"
+                    isLastViewed ? "bg-yellow-50 font-bold" : "bg-blue-100"
                   }`}
                 >
                   <div className="flex w-full space-x-4">
@@ -100,9 +100,8 @@ const History = () => {
       <Alert
         action={actionTaken}
         buttonLabel={alertButtonLabel}
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
         title={alertTitle}
+        {...{ isOpen, setIsOpen }}
       />
     </div>
   );

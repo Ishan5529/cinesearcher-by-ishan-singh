@@ -19,7 +19,6 @@ const MovieCard = ({ movie, clickDetails, setShowId }) => {
           <img
             alt={`${movie?.title}`}
             className="h-64 w-48 rounded-xl"
-            // src={movie?.poster ? movie?.poster : FALLBACK_IMAGE_URL}
             src={fallbackHelper(movie?.poster, FALLBACK_IMAGE_URL)}
             onError={e => {
               e.target.src = FALLBACK_IMAGE_URL;

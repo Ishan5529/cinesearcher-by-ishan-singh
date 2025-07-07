@@ -149,9 +149,7 @@ const DisplayResults = () => {
         <SearchBar
           isModalOpen={isOpen}
           placeHolder={t("searchBar.placeholder")}
-          searchKey={searchKey}
-          setSearchKey={setSearchKey}
-          updateQueryParams={updateQueryParams}
+          {...{ searchKey, setSearchKey, updateQueryParams }}
         />
         <div className="relative cursor-pointer">
           <Filter
@@ -199,15 +197,10 @@ const DisplayResults = () => {
       <div className="mr-auto mt-8 flex flex-1 flex-row flex-wrap gap-4">
         {searchTerm &&
           search?.map((movie, index) => (
-            <MovieCard
-              clickDetails={clickDetails}
-              key={index}
-              movie={movie}
-              setShowId={setShowId}
-            />
+            <MovieCard key={index} {...{ clickDetails, movie, setShowId }} />
           ))}
       </div>
-      <ShowDetails isOpen={isOpen} setIsOpen={setIsOpen} showId={showId} />
+      <ShowDetails {...{ isOpen, setIsOpen, showId }} />
       {!isEmpty(searchTerm) && (
         <div className="mt-10 self-end">
           <Pagination
