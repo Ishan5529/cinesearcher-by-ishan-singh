@@ -1,5 +1,6 @@
 import { t } from "i18next";
 import { NoData } from "neetoui";
+import withTitle from "utils/withTitle";
 
 import { routes } from "../../routes";
 
@@ -16,4 +17,4 @@ const PageNotFound = () => (
   </div>
 );
 
-export default PageNotFound;
+export default withTitle(PageNotFound, "Page Not Found");

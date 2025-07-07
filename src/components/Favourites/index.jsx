@@ -7,6 +7,7 @@ import { Rating } from "neetoicons";
 import { isEmpty } from "ramda";
 import useFavouritesStore from "stores/useFavouritesStore";
 import { useHistoryStore } from "stores/useHistoryStore";
+import withTitle from "utils/withTitle";
 
 const Favourites = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -82,4 +83,4 @@ const Favourites = () => {
   );
 };
 
-export default Favourites;
+export default withTitle(Favourites, "Favourites");

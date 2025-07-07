@@ -23,7 +23,7 @@ const Navbar = () => {
           "text-gray-400": pathname !== routes.home.index,
         })}
       >
-        {t("pageTitle", { title: "Home" })}
+        {t("navbarTitle", { title: "Home" })}
       </NavLink>
       <NavLink
         to={routes.favourites.index}
@@ -32,7 +32,7 @@ const Navbar = () => {
           "text-gray-400": pathname !== routes.favourites.index,
         })}
       >
-        {t("pageTitle", { title: "Favourites" })}
+        {t("navbarTitle", { title: "Favourites" })}
       </NavLink>
     </div>
   );

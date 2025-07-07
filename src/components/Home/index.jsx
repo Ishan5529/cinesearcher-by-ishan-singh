@@ -1,3 +1,5 @@
+import withTitle from "utils/withTitle";
+
 import DisplayResults from "./DisplayResults";
 import History from "./History";
 
@@ -8,4 +10,4 @@ const Home = () => (
   </div>
 );
 
-export default Home;
+export default withTitle(Home, "Home");

@@ -1,6 +1,7 @@
 {
   "title": "Cine Searcher",
-  "pageTitle": "{{title}}",
+  "pageTitle": "Cine Searcher | {{title}}",
+  "navbarTitle": "{{title}}",
   "searchBar": {
     "placeholder": "Search for movies or series"
   },
