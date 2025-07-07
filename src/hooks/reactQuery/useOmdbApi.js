@@ -10,3 +10,10 @@ export const useOmdbFetch = params =>
     queryFn: () => omdbApi.fetchList(params),
     enabled: !!params.s,
   });
+
+export const useOmdbShow = params =>
+  useQuery({
+    queryKey: [QUERY_KEYS.OMDB, params],
+    queryFn: () => omdbApi.fetchById(params),
+    enabled: !!params.i,
+  });

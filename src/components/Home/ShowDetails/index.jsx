@@ -1,9 +1,7 @@
 import { FALLBACK_IMAGE_URL } from "constants/constant";
 
-import { useState, useEffect } from "react";
-
-import omdbApi from "apis/Omdb";
 import { PageLoader, Tooltip } from "components/commons";
+import { useOmdbShow } from "hooks/reactQuery/useOmdbApi";
 import { t } from "i18next";
 import { Rating } from "neetoicons";
 import { Modal } from "neetoui";
@@ -13,27 +11,11 @@ import { fallbackHelper } from "utils/fallbackHelper";
 import Label from "./Label";
 
 const ShowDetails = ({ showId, isOpen, setIsOpen }) => {
-  const [showDetails, setShowDetails] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-
   const { favourites, toggleFavourite } = useFavouritesStore();
 
-  const fetchShowDetails = async () => {
-    if (!showId) {
-      return;
-    }
-    setIsLoading(true);
-    try {
-      const response = await omdbApi.fetchById(showId);
-      setShowDetails(() => response);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const { data, isLoading } = useOmdbShow({ i: showId });
 
-  useEffect(() => {
-    fetchShowDetails();
-  }, [isOpen]);
+  const showDetails = data;
 
   const handleTooltipContent = () => {
     if (showId in favourites) {
@@ -102,7 +84,7 @@ const ShowDetails = ({ showId, isOpen, setIsOpen }) => {
                 <img
                   alt={showDetails?.title}
                   className="rounded-lg"
-                  src={showDetails?.poster || FALLBACK_IMAGE_URL}
+                  src={fallbackHelper(showDetails?.poster, FALLBACK_IMAGE_URL)}
                   onError={({ target }) => {
                     target.src = FALLBACK_IMAGE_URL;
                   }}
