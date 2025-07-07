@@ -1,3 +1,4 @@
+import { getToggledFavourites } from "utils/getToggledFavourites";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -5,17 +6,10 @@ const useFavouritesStore = create(
   persist(
     set => ({
       favourites: {},
-      toggleFavourite: ({ imdbID, title, imdbRating }) =>
-        set(state => {
-          const updatedFavourites = { ...state.favourites };
-          if (updatedFavourites[imdbID]) {
-            delete updatedFavourites[imdbID];
-          } else {
-            updatedFavourites[imdbID] = { title, imdbRating };
-          }
-
-          return { favourites: updatedFavourites };
-        }),
+      toggleFavourite: payload =>
+        set(state => ({
+          favourites: getToggledFavourites(state.favourites, payload),
+        })),
     }),
     {
       name: "favourites",
