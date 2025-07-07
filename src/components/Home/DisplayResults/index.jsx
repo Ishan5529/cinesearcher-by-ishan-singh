@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 
 import MovieCard from "components/Home/DisplayResults/MovieCard";
 import SearchBar from "components/Home/DisplayResults/SearchBar";
-import ShowDetails from "components/Home/ShowDetails";
+import ShowDetails from "components/Home/DisplayResults/ShowDetails";
 import { useOmdbFetch } from "hooks/reactQuery/useOmdbApi";
 import useFuncDebounce from "hooks/useFuncDebounce";
 import useQueryParams from "hooks/useQueryParams";

@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { Tooltip, Alert } from "components/commons";
-import ShowDetails from "components/Home/ShowDetails";
+import ShowDetails from "components/Home/DisplayResults/ShowDetails";
 import { t } from "i18next";
 import { Rating } from "neetoicons";
 import { isEmpty } from "ramda";

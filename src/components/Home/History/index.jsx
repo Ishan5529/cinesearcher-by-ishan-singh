@@ -2,10 +2,11 @@ import React, { useState, useRef, useEffect } from "react";
 
 import { Alert } from "components/commons";
 import { t } from "i18next";
-import { Delete } from "neetoicons";
 import { Button } from "neetoui";
 import { isEmpty } from "ramda";
 import { useHistoryStore } from "stores/useHistoryStore";
+
+import HistoryList from "./List";
 
 const History = () => {
   const history = useHistoryStore(state => state.history);
@@ -63,38 +64,9 @@ const History = () => {
           </p>
         )}
         {!isEmpty(history) && (
-          <ul className="w-full px-4">
-            {history.map((item, index) => {
-              const imdbID = Object.keys(item)[0];
-              const isLastViewed = imdbID === lastViewedIds[0];
-
-              if (!itemRefs.current[imdbID]) {
-                itemRefs.current[imdbID] = React.createRef();
-              }
-
-              return (
-                <li
-                  key={index}
-                  ref={itemRefs.current[imdbID]}
-                  className={`mb-2 text-wrap rounded p-2 text-center shadow hover:bg-blue-200 ${
-                    isLastViewed ? "bg-yellow-50 font-bold" : "bg-blue-100"
-                  }`}
-                >
-                  <div className="flex w-full space-x-4">
-                    <p className="mr-auto text-wrap text-left font-medium">
-                      {Object.values(item)[0]}
-                    </p>
-                    <div
-                      className="cursor-pointer self-center hover:text-red-600"
-                      onClick={() => handleDelete(imdbID)}
-                    >
-                      <Delete size={20} />
-                    </div>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
+          <HistoryList
+            {...{ history, itemRefs, handleDelete, lastViewedIds }}
+          />
         )}
       </div>
       <Alert
