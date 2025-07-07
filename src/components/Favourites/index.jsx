@@ -6,15 +6,15 @@ import { t } from "i18next";
 import { Rating } from "neetoicons";
 import { isEmpty } from "ramda";
 import useFavouritesStore from "stores/useFavouritesStore";
-import { useHistoryStore } from "stores/useHistoryStore";
+import useHistoryStore from "stores/useHistoryStore";
 import withTitle from "utils/withTitle";
 
 const Favourites = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDeleteClicked, setIsDeleteClicked] = useState(false);
   const [showId, setShowId] = useState(null);
-  const { favourites, toggleFavourite } = useFavouritesStore();
-  const addOrMoveToTop = useHistoryStore(state => state.addOrMoveToTop);
+  const { favourites, toggleFavourite } = useFavouritesStore.pick();
+  const addOrMoveToTop = useHistoryStore.pickFrom();
 
   const favouriteEntries = Object.entries(favourites);
 

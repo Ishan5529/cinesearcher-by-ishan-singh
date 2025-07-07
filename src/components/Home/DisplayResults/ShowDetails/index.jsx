@@ -7,7 +7,7 @@ import { Modal } from "neetoui";
 import useFavouritesStore from "stores/useFavouritesStore";
 
 const ShowDetails = ({ showId, isOpen, setIsOpen }) => {
-  const { favourites, toggleFavourite } = useFavouritesStore();
+  const { favourites, toggleFavourite } = useFavouritesStore.pick();
 
   const { data, isLoading } = useOmdbShow({ i: showId });
 

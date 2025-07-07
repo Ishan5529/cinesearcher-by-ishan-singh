@@ -4,16 +4,13 @@ import { Alert } from "components/commons";
 import { t } from "i18next";
 import { Button } from "neetoui";
 import { isEmpty } from "ramda";
-import { useHistoryStore } from "stores/useHistoryStore";
+import useHistoryStore from "stores/useHistoryStore";
 
 import HistoryList from "./List";
 
 const History = () => {
-  const history = useHistoryStore(state => state.history);
-  const viewKey = useHistoryStore(state => state.viewKey);
-  const lastViewedIds = useHistoryStore(state => state.lastViewedIds);
-  const deleteFromHistory = useHistoryStore(state => state.deleteFromHistory);
-  const clearHistory = useHistoryStore(state => state.clearHistory);
+  const { history, viewKey, lastViewedIds, deleteFromHistory, clearHistory } =
+    useHistoryStore.pick();
   const itemRefs = useRef({});
   const [isOpen, setIsOpen] = useState(false);
   const [actionTaken, setActionTaken] = useState(() => () => {});

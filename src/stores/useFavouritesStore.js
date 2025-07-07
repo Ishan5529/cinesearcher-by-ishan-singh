@@ -1,19 +1,27 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
-const useFavouritesStore = create(set => ({
-  favourites: JSON.parse(localStorage.getItem("favourites")) || {},
-  toggleFavourite: ({ imdbID, title, imdbRating }) =>
-    set(state => {
-      const updatedFavourites = { ...state.favourites };
-      if (updatedFavourites[imdbID]) {
-        delete updatedFavourites[imdbID];
-      } else {
-        updatedFavourites[imdbID] = { title, imdbRating };
-      }
-      localStorage.setItem("favourites", JSON.stringify(updatedFavourites));
+const useFavouritesStore = create(
+  persist(
+    set => ({
+      favourites: {},
+      toggleFavourite: ({ imdbID, title, imdbRating }) =>
+        set(state => {
+          const updatedFavourites = { ...state.favourites };
+          if (updatedFavourites[imdbID]) {
+            delete updatedFavourites[imdbID];
+          } else {
+            updatedFavourites[imdbID] = { title, imdbRating };
+          }
 
-      return { favourites: updatedFavourites };
+          return { favourites: updatedFavourites };
+        }),
     }),
-}));
+    {
+      name: "favourites",
+      getStorage: () => localStorage,
+    }
+  )
+);
 
 export default useFavouritesStore;

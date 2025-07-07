@@ -13,7 +13,7 @@ import { Filter } from "neetoicons";
 import { Pagination } from "neetoui";
 import { isEmpty } from "ramda";
 import { useHistory } from "react-router-dom";
-import { useHistoryStore } from "stores/useHistoryStore";
+import useHistoryStore from "stores/useHistoryStore";
 import { filterNonNullAndEmpty } from "utils/filterNonNullAndEmpty";
 import { buildUrl } from "utils/url";
 
@@ -27,7 +27,7 @@ const DisplayResults = () => {
   const [isMovieChecked, setIsMovieChecked] = useState(false);
   const [isSeriesChecked, setIsSeriesChecked] = useState(false);
   const [showId, setShowId] = useState(null);
-  const addOrMoveToTop = useHistoryStore(state => state.addOrMoveToTop);
+  const addOrMoveToTop = useHistoryStore.pickFrom();
   const { page, searchYear, type = "", searchTerm = "" } = useQueryParams();
   const [searchKey, setSearchKey] = useState(searchTerm || "");
   const [year, setYear] = useState("");
