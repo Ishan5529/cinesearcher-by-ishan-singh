@@ -9,13 +9,13 @@ import { useOmdbFetch } from "hooks/reactQuery/useOmdbApi";
 import useFuncDebounce from "hooks/useFuncDebounce";
 import useQueryParams from "hooks/useQueryParams";
 import { t } from "i18next";
-import { filterNonNull } from "neetocist";
 import { Filter, Close } from "neetoicons";
 import { Pagination, Input, Checkbox, Toastr } from "neetoui";
 import { isEmpty } from "ramda";
 import { useHistory } from "react-router-dom";
 import { Bounce } from "react-toastify";
 import { useHistoryStore } from "stores/useHistoryStore";
+import { filterNonNullAndEmpty } from "utils/filterNonNullAndEmpty";
 import { buildUrl } from "utils/url";
 
 import { routes } from "../../../routes";
@@ -32,18 +32,12 @@ const DisplayResults = () => {
   const [year, setYear] = useState("");
   const history = useHistory();
 
-  const getShowType = () => {
-    if (isMovieChecked && isSeriesChecked) {
-      return ["movie", "series"];
-    }
+  const getShowType = (movie = isMovieChecked, series = isSeriesChecked) => {
+    if (movie && series) return ["movie", "series"];
 
-    if (isMovieChecked) {
-      return "movie";
-    }
+    if (movie) return "movie";
 
-    if (isSeriesChecked) {
-      return "series";
-    }
+    if (series) return "series";
 
     return "";
   };
@@ -62,10 +56,6 @@ const DisplayResults = () => {
     setYear(searchYear || "");
   }, [searchTerm, searchYear]);
 
-  useEffect(() => {
-    updateQueryParams({ type: getShowType(), searchYear: year });
-  }, [isMovieChecked, isSeriesChecked, year]);
-
   const { data: { search, totalResults } = {} } = useOmdbFetch({
     s: searchTerm,
     page: Number(page) || DEFAULT_PAGE_INDEX,
@@ -77,20 +67,12 @@ const DisplayResults = () => {
     history.replace(
       buildUrl(
         routes.home.index,
-        filterNonNull({
+        filterNonNullAndEmpty({
           ...params,
           page,
         })
       )
     );
-
-  const filterNonNullAndEmpty = params => {
-    const nonNullParams = filterNonNull(params);
-
-    return Object.fromEntries(
-      Object.entries(nonNullParams).filter(([_, value]) => !isEmpty(value))
-    );
-  };
 
   const updateQueryParams = useFuncDebounce(updatedValue => {
     const updatedParam = {
@@ -111,25 +93,54 @@ const DisplayResults = () => {
     addOrMoveToTop(imdbID, title);
   };
 
-  const validateDate = event => {
-    const value = event.target.value;
+  const validateDate = ({ target: { value } }) => {
     const maxYear = new Date().getFullYear();
     if (value === "") {
       setYear("");
 
-      return;
+      return "";
     }
 
     const numericValue = Number(value);
     if (numericValue <= maxYear) {
       setYear(value);
-    } else {
-      setYear(String(maxYear));
-      Toastr.error(t("error.yearError"), {
-        autoClose: 2000,
-        transition: Bounce,
-      });
+
+      return value;
     }
+    setYear(String(maxYear));
+    Toastr.error(t("error.yearError"), {
+      autoClose: 2000,
+      transition: Bounce,
+    });
+
+    return String(maxYear);
+  };
+
+  const handleYearChange = event => {
+    const validatedValue = validateDate(event);
+    updateQueryParams({ searchYear: validatedValue });
+  };
+
+  const handleMovieCheck = () => {
+    setIsMovieChecked(prev => {
+      const newValue = !prev;
+      updateQueryParams({
+        type: getShowType(newValue, isSeriesChecked),
+      });
+
+      return newValue;
+    });
+  };
+
+  const handleSeriesCheck = () => {
+    setIsSeriesChecked(prev => {
+      const newValue = !prev;
+      updateQueryParams({
+        type: getShowType(isMovieChecked, newValue),
+      });
+
+      return newValue;
+    });
   };
 
   return (
@@ -156,7 +167,7 @@ const DisplayResults = () => {
                 placeholder="YYYY"
                 type="number"
                 value={year}
-                onChange={validateDate}
+                onChange={handleYearChange}
               />
               <div className="mt-6 flex flex-col items-start space-y-2">
                 <h3 className="font-medium">{t("inputLabels.type")}</h3>
@@ -165,13 +176,13 @@ const DisplayResults = () => {
                     checked={isMovieChecked}
                     id="movie"
                     label={t("inputLabels.movie")}
-                    onChange={() => setIsMovieChecked(!isMovieChecked)}
+                    onChange={handleMovieCheck}
                   />
                   <Checkbox
                     checked={isSeriesChecked}
                     id="series"
                     label={t("inputLabels.series")}
-                    onChange={() => setIsSeriesChecked(!isSeriesChecked)}
+                    onChange={handleSeriesCheck}
                   />
                 </div>
               </div>

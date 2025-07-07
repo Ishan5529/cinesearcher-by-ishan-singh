@@ -8,6 +8,9 @@ import { t } from "i18next";
 import { Rating } from "neetoicons";
 import { Modal } from "neetoui";
 import useFavouritesStore from "stores/useFavouritesStore";
+import { fallbackHelper } from "utils/fallbackHelper";
+
+import Label from "./Label";
 
 const ShowDetails = ({ showId, isOpen, setIsOpen }) => {
   const [showDetails, setShowDetails] = useState(null);
@@ -48,7 +51,6 @@ const ShowDetails = ({ showId, isOpen, setIsOpen }) => {
       title: showDetails?.title,
       imdbRating: showDetails?.imdbRating,
     });
-    console.log("Toggled favourite for showId:", showId);
   };
 
   if (isLoading) {
@@ -101,47 +103,48 @@ const ShowDetails = ({ showId, isOpen, setIsOpen }) => {
                   alt={showDetails?.title}
                   className="rounded-lg"
                   src={showDetails?.poster || FALLBACK_IMAGE_URL}
-                  onError={e => {
-                    e.target.src = FALLBACK_IMAGE_URL;
+                  onError={({ target }) => {
+                    target.src = FALLBACK_IMAGE_URL;
                   }}
                 />
               </div>
             </div>
             <div className="Details flex w-3/5 flex-col justify-between">
               <p className="text-gray-600">
-                {showDetails?.plot !== "N/A"
-                  ? showDetails?.plot
-                  : t("error.noPlotDetails")}
+                {fallbackHelper(showDetails?.plot, t("error.noPlotDetails"))}
               </p>
-              <p>
-                <strong>{t("showDetails.director")}:</strong>{" "}
-                {showDetails?.director}
-              </p>
-              <p>
-                <strong>{t("showDetails.cast")}:</strong> {showDetails?.actors}
-              </p>
-              <p>
-                <strong>{t("showDetails.boxOffice")}:</strong>{" "}
-                {showDetails?.boxOffice}
-              </p>
-              <p>
-                <strong>{t("showDetails.year")}:</strong> {showDetails?.year}
-              </p>
-              <p>
-                <strong>{t("showDetails.runtime")}:</strong>{" "}
-                {showDetails?.runtime}
-              </p>
-              <p>
-                <strong>{t("showDetails.language")}:</strong>{" "}
-                {showDetails?.language}
-              </p>
-              <p>
-                <strong>{t("showDetails.rating")}:</strong>{" "}
-                {showDetails?.imdbRating}
-              </p>
-              <p>
-                <strong>{t("showDetails.rated")}:</strong> {showDetails?.rated}
-              </p>
+              <Label
+                content={showDetails?.director}
+                label={t("showDetails.director")}
+              />
+              <Label
+                content={showDetails?.actors}
+                label={t("showDetails.cast")}
+              />
+              <Label
+                content={showDetails?.boxOffice}
+                label={t("showDetails.boxOffice")}
+              />
+              <Label
+                content={showDetails?.year}
+                label={t("showDetails.year")}
+              />
+              <Label
+                content={showDetails?.runtime}
+                label={t("showDetails.runtime")}
+              />
+              <Label
+                content={showDetails?.language}
+                label={t("showDetails.language")}
+              />
+              <Label
+                content={showDetails?.imdbRating}
+                label={t("showDetails.rating")}
+              />
+              <Label
+                content={showDetails?.rated}
+                label={t("showDetails.rated")}
+              />
             </div>
           </div>
         </div>

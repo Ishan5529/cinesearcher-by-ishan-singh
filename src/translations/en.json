@@ -33,7 +33,7 @@
     "networkError": "Network Error",
     "noInternetConnection": "No internet connection",
     "noPlotDetails": "No plot data available.",
-    "yearError": "Year must be less than current year."
+    "yearError": "Year must not exceed the current year."
   },
   "buttonLabels": {
     "showDetails": "View details",
