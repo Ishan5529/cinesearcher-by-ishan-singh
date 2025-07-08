@@ -3,7 +3,7 @@ import React from "react";
 import HistoryListItem from "./Item";
 
 const HistoryList = ({ history, itemRefs, handleDelete, lastViewedIds }) => (
-  <ul className="w-full px-4">
+  <ul className="w-full px-2">
     {history.map((item, index) => {
       const imdbID = Object.keys(item)[0];
       const isLastViewed = imdbID === lastViewedIds[0];

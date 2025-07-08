@@ -17,4 +17,4 @@ const PageNotFound = () => (
   </div>
 );
 
-export default withTitle(PageNotFound, "Page Not Found");
+export default withTitle(PageNotFound, "Page not found");

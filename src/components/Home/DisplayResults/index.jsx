@@ -24,43 +24,51 @@ import { routes } from "../../../routes";
 const DisplayResults = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [isMovieChecked, setIsMovieChecked] = useState(false);
-  const [isSeriesChecked, setIsSeriesChecked] = useState(false);
+  const [checkedTypes, setCheckedTypes] = useState([false, false]);
   const [showId, setShowId] = useState(null);
   const addOrMoveToTop = useHistoryStore.pickFrom();
-  const { page, searchYear, type = "", searchTerm = "" } = useQueryParams();
+  const {
+    page = null,
+    searchYear = "",
+    type = "",
+    searchTerm = "",
+  } = useQueryParams();
   const [searchKey, setSearchKey] = useState(searchTerm || "");
   const [year, setYear] = useState("");
   const history = useHistory();
 
-  const getShowType = (movie = isMovieChecked, series = isSeriesChecked) => {
-    if (movie && series) return ["movie", "series"];
+  const getShowType = ([movie, series]) => {
+    if (movie && series) return "";
 
     if (movie) return "movie";
 
     if (series) return "series";
 
+    setCheckedTypes(() => [true, true]);
+
     return "";
   };
+
+  useEffect(() => {
+    setSearchKey(searchTerm);
+    setCheckedTypes(() => [
+      type === "movie" || type === "",
+      type === "series" || type === "",
+    ]);
+    setYear(searchYear || "");
+  }, [searchTerm, searchYear, type]);
 
   const params = {
     searchTerm,
     searchYear,
     page: Number(page) || DEFAULT_PAGE_INDEX,
-    type: getShowType(),
+    type: getShowType(checkedTypes),
   };
 
-  useEffect(() => {
-    setSearchKey(searchTerm);
-    setIsMovieChecked(type === "movie" || type.includes("movie"));
-    setIsSeriesChecked(type === "series" || type.includes("series"));
-    setYear(searchYear || "");
-  }, [searchTerm, searchYear]);
-
   const { data: { search, totalResults } = {} } = useOmdbFetch({
-    s: searchTerm,
+    s: searchTerm.trim(),
     page: Number(page) || DEFAULT_PAGE_INDEX,
-    type: getShowType(),
+    type,
     y: searchYear,
   });
 
@@ -115,10 +123,8 @@ const DisplayResults = () => {
               setYear,
               updateQueryParams,
               getShowType,
-              setIsMovieChecked,
-              setIsSeriesChecked,
-              isMovieChecked,
-              isSeriesChecked,
+              setCheckedTypes,
+              checkedTypes,
             }}
           />
         </div>

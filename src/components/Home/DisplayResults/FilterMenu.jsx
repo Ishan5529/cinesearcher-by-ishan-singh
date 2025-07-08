@@ -1,7 +1,13 @@
+import {
+  TOASTR_TRANSITION,
+  TOASTR_TIMEOUT,
+  MIN_ALLOWED_YEAR,
+  MAX_ALLOWED_YEAR,
+} from "constants/constant";
+
 import { t } from "i18next";
 import { Close } from "neetoicons";
 import { Input, Checkbox, Toastr } from "neetoui";
-import { Bounce } from "react-toastify";
 
 const FilterMenu = ({
   isFilterOpen,
@@ -10,13 +16,13 @@ const FilterMenu = ({
   setYear,
   updateQueryParams,
   getShowType,
-  setIsMovieChecked,
-  setIsSeriesChecked,
-  isMovieChecked,
-  isSeriesChecked,
+  checkedTypes,
+  setCheckedTypes,
 }) => {
-  const validateDate = ({ target: { value } }) => {
-    const maxYear = new Date().getFullYear();
+  const [isMovieChecked, isSeriesChecked] = checkedTypes;
+
+  const validateYear = ({ target: { value } }) => {
+    const maxYear = MAX_ALLOWED_YEAR;
     if (value === "") {
       setYear("");
 
@@ -31,37 +37,35 @@ const FilterMenu = ({
     }
     setYear(String(maxYear));
     Toastr.error(t("error.yearError"), {
-      autoClose: 2000,
-      transition: Bounce,
+      autoClose: TOASTR_TIMEOUT,
+      transition: TOASTR_TRANSITION,
     });
 
     return String(maxYear);
   };
 
   const handleYearChange = event => {
-    const validatedValue = validateDate(event);
-    updateQueryParams({ searchYear: validatedValue });
+    const validatedValue = validateYear(event);
+    if (validatedValue > MIN_ALLOWED_YEAR || validatedValue === "") {
+      updateQueryParams({ searchYear: validatedValue });
+    }
   };
 
   const handleMovieCheck = () => {
-    setIsMovieChecked(prev => {
-      const newValue = !prev;
-      updateQueryParams({
-        type: getShowType(newValue, isSeriesChecked),
-      });
+    setCheckedTypes(([movie, series]) => {
+      const newChecked = [!movie, series];
+      updateQueryParams({ type: getShowType(newChecked) });
 
-      return newValue;
+      return newChecked;
     });
   };
 
   const handleSeriesCheck = () => {
-    setIsSeriesChecked(prev => {
-      const newValue = !prev;
-      updateQueryParams({
-        type: getShowType(isMovieChecked, newValue),
-      });
+    setCheckedTypes(([movie, series]) => {
+      const newChecked = [movie, !series];
+      updateQueryParams({ type: getShowType(newChecked) });
 
-      return newValue;
+      return newChecked;
     });
   };
 
