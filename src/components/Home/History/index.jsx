@@ -24,7 +24,7 @@ const History = () => {
         block: "start",
       });
     }
-  }, [viewKey, lastViewedIds]);
+  }, [viewKey]);
 
   const handleDelete = imdbID => {
     setAlertTitle(`${t("history.deleteAlertTitle")} ?`);
