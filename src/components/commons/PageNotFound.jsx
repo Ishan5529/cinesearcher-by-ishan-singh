@@ -1,10 +1,11 @@
 import { t } from "i18next";
 import { NoData } from "neetoui";
+import withTitle from "utils/withTitle";
 
 import { routes } from "../../routes";
 
 const PageNotFound = () => (
-  <div className="flex h-4/5 items-center justify-center">
+  <div className="flex h-full items-center justify-center">
     <NoData
       title={t("pageNotFound.title")}
       primaryButtonProps={{
@@ -16,4 +17,4 @@ const PageNotFound = () => (
   </div>
 );
 
-export default PageNotFound;
+export default withTitle(PageNotFound, "Page not found");

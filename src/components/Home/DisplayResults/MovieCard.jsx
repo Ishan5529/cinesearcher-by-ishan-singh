@@ -4,6 +4,7 @@ import { Tooltip } from "components/commons";
 import { t } from "i18next";
 import { Button } from "neetoui";
 import capitalize from "utils/capitalize";
+import { fallbackHelper } from "utils/fallbackHelper";
 
 const MovieCard = ({ movie, clickDetails, setShowId }) => {
   const handleClick = () => {
@@ -12,15 +13,15 @@ const MovieCard = ({ movie, clickDetails, setShowId }) => {
   };
 
   return (
-    <div className="flex h-96 w-72 flex-col justify-between gap-y-2 rounded-2xl px-4 py-2 shadow-2xl hover:bg-gray-100">
+    <div className="flex h-96 w-72 flex-col justify-between gap-y-2 rounded-2xl bg-white px-4 py-2 shadow-2xl transition duration-300 hover:bg-gray-100">
       <div>
         <div className="mb-2 flex items-center justify-center">
           <img
             alt={`${movie?.title}`}
             className="h-64 w-48 rounded-xl"
-            src={movie?.poster ? movie?.poster : FALLBACK_IMAGE_URL}
-            onError={e => {
-              e.target.src = FALLBACK_IMAGE_URL;
+            src={fallbackHelper(movie?.poster, FALLBACK_IMAGE_URL)}
+            onError={({ target }) => {
+              target.src = FALLBACK_IMAGE_URL;
             }}
           />
         </div>

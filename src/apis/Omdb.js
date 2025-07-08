@@ -4,10 +4,10 @@ import { BASE_URL } from "./constant";
 
 const fetchList = params => axios.get(BASE_URL, { params });
 
-const fetchById = id =>
+const fetchById = params =>
   axios.get(BASE_URL, {
     params: {
-      i: id,
+      ...params,
       plot: "full",
     },
   });

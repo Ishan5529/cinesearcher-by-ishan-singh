@@ -2,17 +2,15 @@ import React, { useState, useRef, useEffect } from "react";
 
 import { Alert } from "components/commons";
 import { t } from "i18next";
-import { Delete } from "neetoicons";
 import { Button } from "neetoui";
 import { isEmpty } from "ramda";
-import { useHistoryStore } from "stores/useHistoryStore";
+import useHistoryStore from "stores/useHistoryStore";
+
+import HistoryList from "./List";
 
 const History = () => {
-  const history = useHistoryStore(state => state.history);
-  const viewKey = useHistoryStore(state => state.viewKey);
-  const lastViewedIds = useHistoryStore(state => state.lastViewedIds);
-  const deleteFromHistory = useHistoryStore(state => state.deleteFromHistory);
-  const clearHistory = useHistoryStore(state => state.clearHistory);
+  const { history, viewKey, lastViewedIds, deleteFromHistory, clearHistory } =
+    useHistoryStore.pick();
   const itemRefs = useRef({});
   const [isOpen, setIsOpen] = useState(false);
   const [actionTaken, setActionTaken] = useState(() => () => {});
@@ -23,10 +21,10 @@ const History = () => {
     if (lastViewedIds && itemRefs.current[lastViewedIds[0]]) {
       itemRefs.current[lastViewedIds[0]]?.current?.scrollIntoView({
         behavior: "smooth",
-        block: "center",
+        block: "start",
       });
     }
-  }, [viewKey]);
+  }, [viewKey, lastViewedIds]);
 
   const handleDelete = imdbID => {
     setAlertTitle(`${t("history.deleteAlertTitle")} ?`);
@@ -44,7 +42,7 @@ const History = () => {
   };
 
   return (
-    <div className="flex min-h-screen w-1/4 justify-center overflow-y-auto bg-gray-100">
+    <div className="flex h-full w-1/4 justify-center bg-gray-100">
       <div className="flex w-full max-w-md flex-col items-center px-4 py-6">
         <div className="flex w-full items-center justify-between">
           <h1 className="mb-4 text-2xl font-bold">{t("history.title")}</h1>
@@ -58,51 +56,21 @@ const History = () => {
           )}
         </div>
         {isEmpty(history) && (
-          <p className="my-auto pb-52 text-gray-600">
-            {t("history.emptyHistory")}
-          </p>
+          <p className="my-auto text-gray-600">{t("history.emptyHistory")}</p>
         )}
         {!isEmpty(history) && (
-          <ul className="w-full px-4">
-            {history.map((item, index) => {
-              const imdbID = Object.keys(item)[0];
-              const isLastViewed = imdbID === lastViewedIds[0];
-
-              if (!itemRefs.current[imdbID]) {
-                itemRefs.current[imdbID] = React.createRef();
-              }
-
-              return (
-                <li
-                  key={index}
-                  ref={itemRefs.current[imdbID]}
-                  className={`mb-2 text-wrap rounded p-2 text-center shadow hover:bg-blue-200 ${
-                    isLastViewed ? "bg-yellow-100 font-bold" : "bg-blue-100"
-                  }`}
-                >
-                  <div className="flex w-full space-x-4">
-                    <p className="mr-auto text-wrap text-left font-medium">
-                      {Object.values(item)[0]}
-                    </p>
-                    <div
-                      className="cursor-pointer self-center hover:text-red-600"
-                      onClick={() => handleDelete(imdbID)}
-                    >
-                      <Delete size={20} />
-                    </div>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
+          <div className="h-full w-full overflow-y-auto rounded-xl border-2 border-gray-300 pt-1.5">
+            <HistoryList
+              {...{ history, itemRefs, handleDelete, lastViewedIds }}
+            />
+          </div>
         )}
       </div>
       <Alert
         action={actionTaken}
         buttonLabel={alertButtonLabel}
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
         title={alertTitle}
+        {...{ isOpen, setIsOpen }}
       />
     </div>
   );

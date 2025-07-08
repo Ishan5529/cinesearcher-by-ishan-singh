@@ -8,10 +8,10 @@ import { routes } from "routes";
 
 const App = () => (
   <div className="scroll-hidden flex h-screen w-screen flex-col overflow-auto">
-    <div className="z-50 w-full text-white">
+    <div className="z-50 h-[8%] w-full text-white">
       <Navbar />
     </div>
-    <div className="h-full w-full">
+    <div className="h-[92%] w-full">
       <Switch>
         <Route exact component={Home} path={routes.home.index} />
         <Route exact component={Favourites} path={routes.favourites.index} />

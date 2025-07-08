@@ -4,72 +4,72 @@ import React, { useState, useEffect } from "react";
 
 import MovieCard from "components/Home/DisplayResults/MovieCard";
 import SearchBar from "components/Home/DisplayResults/SearchBar";
-import ShowDetails from "components/Home/ShowDetails";
+import ShowDetails from "components/Home/DisplayResults/ShowDetails";
 import { useOmdbFetch } from "hooks/reactQuery/useOmdbApi";
 import useFuncDebounce from "hooks/useFuncDebounce";
 import useQueryParams from "hooks/useQueryParams";
 import { t } from "i18next";
-import { filterNonNull } from "neetocist";
-import { Filter, Close } from "neetoicons";
-import { Pagination, Input, Checkbox, Toastr } from "neetoui";
+import { Filter } from "neetoicons";
+import { Pagination } from "neetoui";
 import { isEmpty } from "ramda";
 import { useHistory } from "react-router-dom";
-import { Bounce } from "react-toastify";
-import { useHistoryStore } from "stores/useHistoryStore";
+import useHistoryStore from "stores/useHistoryStore";
+import { filterNonNullAndEmpty } from "utils/filterNonNullAndEmpty";
 import { buildUrl } from "utils/url";
+import { validatedYear } from "utils/validatedYear";
+
+import FilterMenu from "./FilterMenu";
 
 import { routes } from "../../../routes";
 
 const DisplayResults = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [isMovieChecked, setIsMovieChecked] = useState(false);
-  const [isSeriesChecked, setIsSeriesChecked] = useState(false);
+  const [checkedTypes, setCheckedTypes] = useState([false, false]);
   const [showId, setShowId] = useState(null);
-  const addOrMoveToTop = useHistoryStore(state => state.addOrMoveToTop);
-  const { page, searchYear, type = "", searchTerm = "" } = useQueryParams();
+  const addOrMoveToTop = useHistoryStore.pickFrom();
+  const {
+    page = null,
+    searchYear = "",
+    type = "",
+    searchTerm = "",
+  } = useQueryParams();
   const [searchKey, setSearchKey] = useState(searchTerm || "");
   const [year, setYear] = useState("");
   const history = useHistory();
 
-  const getShowType = () => {
-    if (isMovieChecked && isSeriesChecked) {
-      return ["movie", "series"];
-    }
+  const getShowType = ([movie, series]) => {
+    if (movie && series) return "";
 
-    if (isMovieChecked) {
-      return "movie";
-    }
+    if (movie) return "movie";
 
-    if (isSeriesChecked) {
-      return "series";
-    }
+    if (series) return "series";
+
+    setCheckedTypes(() => [true, true]);
 
     return "";
   };
 
-  const params = {
-    searchTerm,
-    searchYear,
-    page: Number(page) || DEFAULT_PAGE_INDEX,
-    type: getShowType(),
-  };
-
   useEffect(() => {
     setSearchKey(searchTerm);
-    setIsMovieChecked(type === "movie" || type.includes("movie"));
-    setIsSeriesChecked(type === "series" || type.includes("series"));
+    setCheckedTypes(() => [
+      type === "movie" || type === "",
+      type === "series" || type === "",
+    ]);
     setYear(searchYear || "");
-  }, [searchTerm, searchYear]);
+  }, [searchTerm, searchYear, type]);
 
-  useEffect(() => {
-    updateQueryParams({ type: getShowType(), searchYear: year });
-  }, [isMovieChecked, isSeriesChecked, year]);
+  const params = {
+    searchTerm,
+    searchYear: validatedYear(year, setYear),
+    page: Number(page) || DEFAULT_PAGE_INDEX,
+    type: getShowType(checkedTypes),
+  };
 
   const { data: { search, totalResults } = {} } = useOmdbFetch({
-    s: searchTerm,
+    s: searchTerm.trim(),
     page: Number(page) || DEFAULT_PAGE_INDEX,
-    type: getShowType(),
+    type,
     y: searchYear,
   });
 
@@ -77,20 +77,12 @@ const DisplayResults = () => {
     history.replace(
       buildUrl(
         routes.home.index,
-        filterNonNull({
+        filterNonNullAndEmpty({
           ...params,
           page,
         })
       )
     );
-
-  const filterNonNullAndEmpty = params => {
-    const nonNullParams = filterNonNull(params);
-
-    return Object.fromEntries(
-      Object.entries(nonNullParams).filter(([_, value]) => !isEmpty(value))
-    );
-  };
 
   const updateQueryParams = useFuncDebounce(updatedValue => {
     const updatedParam = {
@@ -107,96 +99,45 @@ const DisplayResults = () => {
   });
 
   const clickDetails = (imdbID, title) => {
-    setIsOpen(true);
+    setIsModalOpen(true);
     addOrMoveToTop(imdbID, title);
-  };
-
-  const validateDate = event => {
-    const value = event.target.value;
-    const maxYear = new Date().getFullYear();
-    if (value === "") {
-      setYear("");
-
-      return;
-    }
-
-    const numericValue = Number(value);
-    if (numericValue <= maxYear) {
-      setYear(value);
-    } else {
-      setYear(String(maxYear));
-      Toastr.error(t("error.yearError"), {
-        autoClose: 2000,
-        transition: Bounce,
-      });
-    }
   };
 
   return (
     <div className="scroll-hidden flex h-full w-3/4 flex-col items-center overflow-y-auto border-2 bg-gray-50 px-10 py-10">
-      <div className="flex w-full items-center justify-between space-x-4">
+      <div className="flex w-full items-center justify-between space-x-6">
         <SearchBar
-          isModalOpen={isOpen}
           placeHolder={t("searchBar.placeholder")}
-          searchKey={searchKey}
-          setSearchKey={setSearchKey}
-          updateQueryParams={updateQueryParams}
+          {...{ isModalOpen, searchKey, setSearchKey, updateQueryParams }}
         />
         <div className="relative cursor-pointer">
           <Filter
-            fill={isFilterOpen ? "lightgray" : "none"}
+            className="hover:fill-gray-300"
+            fill={isFilterOpen ? "lightgray" : "darkgray"}
+            size={28}
             onClick={() => setIsFilterOpen(prev => !prev)}
           />
-          {isFilterOpen && (
-            <div className="absolute right-0 top-10 z-10 w-96 cursor-default rounded-md border bg-white px-4 pb-4 pt-10 shadow-lg">
-              <Input
-                label={t("inputLabels.year")}
-                max={new Date().getFullYear()}
-                min={1900}
-                placeholder="YYYY"
-                type="number"
-                value={year}
-                onChange={validateDate}
-              />
-              <div className="mt-6 flex flex-col items-start space-y-2">
-                <h3 className="font-medium">{t("inputLabels.type")}</h3>
-                <div className="flex items-center space-x-16">
-                  <Checkbox
-                    checked={isMovieChecked}
-                    id="movie"
-                    label={t("inputLabels.movie")}
-                    onChange={() => setIsMovieChecked(!isMovieChecked)}
-                  />
-                  <Checkbox
-                    checked={isSeriesChecked}
-                    id="series"
-                    label={t("inputLabels.series")}
-                    onChange={() => setIsSeriesChecked(!isSeriesChecked)}
-                  />
-                </div>
-              </div>
-              <div
-                className="absolute right-2 top-2 cursor-pointer"
-                onClick={() => setIsFilterOpen(false)}
-              >
-                <Close size={16} />
-              </div>
-            </div>
-          )}
+          <FilterMenu
+            {...{
+              isFilterOpen,
+              setIsFilterOpen,
+              year,
+              setYear,
+              updateQueryParams,
+              getShowType,
+              setCheckedTypes,
+              checkedTypes,
+            }}
+          />
         </div>
       </div>
       <div className="mr-auto mt-8 flex flex-1 flex-row flex-wrap gap-4">
         {searchTerm &&
           search?.map((movie, index) => (
-            <MovieCard
-              clickDetails={clickDetails}
-              key={index}
-              movie={movie}
-              setShowId={setShowId}
-            />
+            <MovieCard key={index} {...{ clickDetails, movie, setShowId }} />
           ))}
       </div>
-      <ShowDetails isOpen={isOpen} setIsOpen={setIsOpen} showId={showId} />
+      <ShowDetails {...{ isModalOpen, setIsModalOpen, showId }} />
       {!isEmpty(searchTerm) && (
         <div className="mt-10 self-end">
           <Pagination
