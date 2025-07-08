@@ -47,7 +47,7 @@ const Favourites = () => {
               <h2 className="text-xl font-semibold">{title}</h2>
               <p>
                 <strong>{t("showDetails.rating")}:</strong>{" "}
-                <span className="text-base">{imdbRating}</span> / 10.0
+                <span className="text-base">{imdbRating}</span> {imdbRating === "N/A" ? "" : "/ 10.0"}
               </p>
               <button
                 className="mt-2 rounded bg-blue-400 px-4 py-1 text-white hover:bg-blue-500"
