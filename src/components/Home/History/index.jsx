@@ -21,10 +21,10 @@ const History = () => {
     if (lastViewedIds && itemRefs.current[lastViewedIds[0]]) {
       itemRefs.current[lastViewedIds[0]]?.current?.scrollIntoView({
         behavior: "smooth",
-        block: "center",
+        block: "start",
       });
     }
-  }, [viewKey]);
+  }, [viewKey, lastViewedIds]);
 
   const handleDelete = imdbID => {
     setAlertTitle(`${t("history.deleteAlertTitle")} ?`);
@@ -42,7 +42,7 @@ const History = () => {
   };
 
   return (
-    <div className="flex min-h-screen w-1/4 justify-center bg-gray-100">
+    <div className="flex h-full w-1/4 justify-center bg-gray-100">
       <div className="flex w-full max-w-md flex-col items-center px-4 py-6">
         <div className="flex w-full items-center justify-between">
           <h1 className="mb-4 text-2xl font-bold">{t("history.title")}</h1>
@@ -56,9 +56,7 @@ const History = () => {
           )}
         </div>
         {isEmpty(history) && (
-          <p className="my-auto pb-52 text-gray-600">
-            {t("history.emptyHistory")}
-          </p>
+          <p className="my-auto text-gray-600">{t("history.emptyHistory")}</p>
         )}
         {!isEmpty(history) && (
           <div className="h-full w-full overflow-y-auto rounded-xl border-2 border-gray-300 pt-1.5">

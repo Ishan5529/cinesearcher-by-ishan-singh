@@ -12,13 +12,15 @@ const Navbar = () => {
   const { pathname } = useLocation();
 
   return (
-    <div className="flex flex-row items-center space-x-8 bg-transparent py-6 text-white shadow-sm">
-      <div className="rounded-lg p-2 text-3xl font-bold text-gray-700">
-        <span className="text-3xl text-red-600">Cine</span> Searcher
-      </div>
+    <div className="flex h-full flex-row items-center space-x-8 bg-transparent py-6 text-white shadow-sm">
+      <NavLink className="" to={routes.home.index}>
+        <div className="rounded-lg p-2 text-3xl font-bold text-gray-600">
+          <span className="text-3xl text-purple-600">Cine</span> Searcher
+        </div>
+      </NavLink>
       <NavLink
         to={routes.home.index}
-        className={classNames("font-semibold hover:text-red-300", {
+        className={classNames("text-base font-semibold hover:text-pink-300", {
           "text-blue-400": pathname === routes.home.index,
           "text-gray-400": pathname !== routes.home.index,
         })}
@@ -27,7 +29,7 @@ const Navbar = () => {
       </NavLink>
       <NavLink
         to={routes.favourites.index}
-        className={classNames("font-semibold hover:text-red-300", {
+        className={classNames("text-base font-semibold hover:text-pink-300", {
           "text-blue-400": pathname === routes.favourites.index,
           "text-gray-400": pathname !== routes.favourites.index,
         })}

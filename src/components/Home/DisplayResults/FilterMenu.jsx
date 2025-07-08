@@ -1,13 +1,9 @@
-import {
-  TOASTR_TRANSITION,
-  TOASTR_TIMEOUT,
-  MIN_ALLOWED_YEAR,
-  MAX_ALLOWED_YEAR,
-} from "constants/constant";
+import { MIN_ALLOWED_YEAR, MAX_ALLOWED_YEAR } from "constants/constant";
 
 import { t } from "i18next";
 import { Close } from "neetoicons";
-import { Input, Checkbox, Toastr } from "neetoui";
+import { Input, Checkbox } from "neetoui";
+import { displayYearRangeError } from "utils/displayYearRangeError";
 
 const FilterMenu = ({
   isFilterOpen,
@@ -36,17 +32,14 @@ const FilterMenu = ({
       return value;
     }
     setYear(String(maxYear));
-    Toastr.error(t("error.yearError"), {
-      autoClose: TOASTR_TIMEOUT,
-      transition: TOASTR_TRANSITION,
-    });
+    displayYearRangeError();
 
     return String(maxYear);
   };
 
   const handleYearChange = event => {
     const validatedValue = validateYear(event);
-    if (validatedValue > MIN_ALLOWED_YEAR || validatedValue === "") {
+    if (validatedValue >= MIN_ALLOWED_YEAR || validatedValue === "") {
       updateQueryParams({ searchYear: validatedValue });
     }
   };
@@ -71,12 +64,12 @@ const FilterMenu = ({
 
   return (
     isFilterOpen && (
-      <div className="absolute right-0 top-10 z-10 w-96 cursor-default rounded-md border bg-white px-4 pb-4 pt-10 shadow-lg">
+      <div className="absolute right-0 top-10 z-10 w-[26rem] cursor-default rounded-lg border bg-white py-6 pl-4 pr-12 shadow-lg">
         <Input
           label={t("inputLabels.year")}
-          max={new Date().getFullYear()}
-          min={1900}
-          placeholder="YYYY"
+          max={MAX_ALLOWED_YEAR}
+          min={MIN_ALLOWED_YEAR}
+          placeholder={t("searchBar.yearPlaceholder")}
           type="number"
           value={year}
           onChange={handleYearChange}
@@ -99,10 +92,10 @@ const FilterMenu = ({
           </div>
         </div>
         <div
-          className="absolute right-2 top-2 cursor-pointer"
+          className="absolute right-3 top-3 cursor-pointer"
           onClick={() => setIsFilterOpen(false)}
         >
-          <Close size={16} />
+          <Close size={18} />
         </div>
       </div>
     )

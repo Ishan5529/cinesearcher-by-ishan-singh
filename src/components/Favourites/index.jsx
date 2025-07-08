@@ -10,7 +10,7 @@ import useHistoryStore from "stores/useHistoryStore";
 import withTitle from "utils/withTitle";
 
 const Favourites = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteClicked, setIsDeleteClicked] = useState(false);
   const [showId, setShowId] = useState(null);
   const { favourites, toggleFavourite } = useFavouritesStore.pick();
@@ -36,11 +36,11 @@ const Favourites = () => {
   };
 
   return (
-    <div className="flex h-screen w-full flex-col overflow-y-auto bg-gray-50 px-16 py-8">
+    <div className="flex h-full w-full flex-col overflow-y-auto bg-gray-50 px-16 py-8">
       {favouriteEntries &&
         favouriteEntries.map(([imdbID, { title, imdbRating }]) => (
           <div
-            className="m-2 flex rounded border bg-white px-6 py-4 shadow-lg shadow-blue-200"
+            className="m-2 flex rounded-lg border bg-white px-6 py-4 shadow-lg shadow-gray-400 hover:border hover:bg-blue-50"
             key={imdbID}
           >
             <div className="flex-1">
@@ -50,9 +50,9 @@ const Favourites = () => {
                 <span className="text-base">{imdbRating}</span> / 10.0
               </p>
               <button
-                className="mt-2 rounded bg-blue-500 px-4 py-1 text-white hover:bg-blue-700"
+                className="mt-2 rounded bg-blue-400 px-4 py-1 text-white hover:bg-blue-500"
                 onClick={() => {
-                  setIsOpen(() => true);
+                  setIsModalOpen(() => true);
                   setShowId(() => imdbID);
                   updateHistory(imdbID, title);
                 }}
@@ -70,7 +70,7 @@ const Favourites = () => {
             </Tooltip>
           </div>
         ))}
-      <ShowDetails isOpen={isOpen} setIsOpen={setIsOpen} showId={showId} />
+      <ShowDetails {...{ isModalOpen, setIsModalOpen, showId }} />
       <Alert
         action={() => toggleFavourite({ imdbID: showId })}
         buttonLabel={t("buttonLabels.remove")}

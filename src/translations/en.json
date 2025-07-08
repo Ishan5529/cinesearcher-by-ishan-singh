@@ -3,7 +3,8 @@
   "pageTitle": "Cine Searcher | {{title}}",
   "navbarTitle": "{{title}}",
   "searchBar": {
-    "placeholder": "Search for movies or series"
+    "placeholder": "Search for movies or series",
+    "yearPlaceholder": "Enter a valid year between 1888 and current year"
   },
   "history": {
     "title": "View history",
@@ -34,7 +35,7 @@
     "networkError": "Network Error",
     "noInternetConnection": "No internet connection",
     "noPlotDetails": "No plot data available.",
-    "yearError": "Year must not exceed the current year."
+    "yearRangeError": "Year must be between 1888 and the current year."
   },
   "buttonLabels": {
     "showDetails": "View details",

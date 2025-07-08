@@ -60,9 +60,11 @@ const responseInterceptors = () => {
   );
 };
 
-export default function initializeAxios() {
+const initializeAxios = () => {
   axios.defaults.baseURL = process.env.REACT_APP_OMDB_API_URL;
   axios.defaults.params = {};
   axios.defaults.params["apikey"] = process.env.REACT_APP_OMDB_API_KEY;
   responseInterceptors();
-}
+};
+
+export default initializeAxios;

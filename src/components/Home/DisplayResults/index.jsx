@@ -16,13 +16,14 @@ import { useHistory } from "react-router-dom";
 import useHistoryStore from "stores/useHistoryStore";
 import { filterNonNullAndEmpty } from "utils/filterNonNullAndEmpty";
 import { buildUrl } from "utils/url";
+import { validatedYear } from "utils/validatedYear";
 
 import FilterMenu from "./FilterMenu";
 
 import { routes } from "../../../routes";
 
 const DisplayResults = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [checkedTypes, setCheckedTypes] = useState([false, false]);
   const [showId, setShowId] = useState(null);
@@ -60,7 +61,7 @@ const DisplayResults = () => {
 
   const params = {
     searchTerm,
-    searchYear,
+    searchYear: validatedYear(year, setYear),
     page: Number(page) || DEFAULT_PAGE_INDEX,
     type: getShowType(checkedTypes),
   };
@@ -98,21 +99,22 @@ const DisplayResults = () => {
   });
 
   const clickDetails = (imdbID, title) => {
-    setIsOpen(true);
+    setIsModalOpen(true);
     addOrMoveToTop(imdbID, title);
   };
 
   return (
     <div className="scroll-hidden flex h-full w-3/4 flex-col items-center overflow-y-auto border-2 bg-gray-50 px-10 py-10">
-      <div className="flex w-full items-center justify-between space-x-4">
+      <div className="flex w-full items-center justify-between space-x-6">
         <SearchBar
-          isModalOpen={isOpen}
           placeHolder={t("searchBar.placeholder")}
-          {...{ searchKey, setSearchKey, updateQueryParams }}
+          {...{ isModalOpen, searchKey, setSearchKey, updateQueryParams }}
         />
         <div className="relative cursor-pointer">
           <Filter
-            fill={isFilterOpen ? "lightgray" : "none"}
+            className="hover:fill-gray-300"
+            fill={isFilterOpen ? "lightgray" : "darkgray"}
+            size={28}
             onClick={() => setIsFilterOpen(prev => !prev)}
           />
           <FilterMenu
@@ -135,7 +137,7 @@ const DisplayResults = () => {
             <MovieCard key={index} {...{ clickDetails, movie, setShowId }} />
           ))}
       </div>
-      <ShowDetails {...{ isOpen, setIsOpen, showId }} />
+      <ShowDetails {...{ isModalOpen, setIsModalOpen, showId }} />
       {!isEmpty(searchTerm) && (
         <div className="mt-10 self-end">
           <Pagination

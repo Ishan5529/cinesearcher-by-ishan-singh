@@ -6,7 +6,7 @@ import { t } from "i18next";
 import { Modal } from "neetoui";
 import useFavouritesStore from "stores/useFavouritesStore";
 
-const ShowDetails = ({ showId, isOpen, setIsOpen }) => {
+const ShowDetails = ({ showId, isModalOpen, setIsModalOpen }) => {
   const { favourites, toggleFavourite } = useFavouritesStore.pick();
 
   const { data, isLoading } = useOmdbShow({ i: showId });
@@ -39,10 +39,10 @@ const ShowDetails = ({ showId, isOpen, setIsOpen }) => {
   return (
     showDetails && (
       <Modal
-        isOpen={isOpen}
+        isOpen={isModalOpen}
         style={{ width: "60%", minWidth: "50vw", margin: "0 auto" }}
         onClose={() => {
-          setIsOpen(false);
+          setIsModalOpen(false);
         }}
       >
         <div className="flex flex-col items-center p-6">
